@@ -10,51 +10,109 @@
 <body>
 
 <header class="main-header">
-  <h1>STEM Learning Hub</h1>
+  <h1 id="mainTitle">STEM Learning Hub</h1>
 
-  <p class="statement">
+  <p class="statement" id="statement">
     A High-Tech STEM Learning Hub developed by Professor Porras
   </p>
 
   <img src="stem-logo.png" alt="STEM Learning Hub Logo" class="logo">
 
+  <div class="language-buttons">
+    <button onclick="setLanguage('en')">English</button>
+    <button onclick="setLanguage('es')">Español</button>
+  </div>
+
   <nav class="main-menu">
-    <a href="pages/precollege.html">Pre-College</a>
-    <a href="pages/college.html">College</a>
-    <a href="pages/adult.html">Adult Education</a>
+    <a href="pages/precollege.html" id="navPre">Pre-College</a>
+    <a href="pages/college.html" id="navCollege">College</a>
+    <a href="pages/adult.html" id="navAdult">Adult Education</a>
   </nav>
 </header>
 
 <section class="hero">
-  <h2>Dream. Learn. Build. Launch.</h2>
-  <p>
+  <h2 id="heroTitle">Dream. Learn. Build. Launch.</h2>
+  <p id="heroText">
     An interactive platform for STEM, Robotics, AI, Coding, IoT, Data Science, and Quantum Computing.
   </p>
 </section>
 
 <section class="cards">
   <div class="card">
-    <h3>Pre-College Courses</h3>
-    <p>Explore STEM foundations through hands-on learning.</p>
-    <a href="pages/precollege.html">Enter</a>
+    <h3 id="cardPreTitle">Pre-College Courses</h3>
+    <p id="cardPreText">Explore STEM foundations through hands-on learning.</p>
+    <a href="pages/precollege.html" id="enterPre">Enter</a>
   </div>
 
   <div class="card">
-    <h3>College Courses</h3>
-    <p>Develop advanced technical and career-ready skills.</p>
-    <a href="pages/college.html">Enter</a>
+    <h3 id="cardCollegeTitle">College Courses</h3>
+    <p id="cardCollegeText">Develop advanced technical and career-ready skills.</p>
+    <a href="pages/college.html" id="enterCollege">Enter</a>
   </div>
 
   <div class="card">
-    <h3>Adult Education</h3>
-    <p>Upskill, reskill, and grow professionally.</p>
-    <a href="pages/adult.html">Enter</a>
+    <h3 id="cardAdultTitle">Adult Education</h3>
+    <p id="cardAdultText">Upskill, reskill, and grow professionally.</p>
+    <a href="pages/adult.html" id="enterAdult">Enter</a>
   </div>
 </section>
 
 <footer>
-  <p>© 2026 STEM Learning Hub | Developed by Professor Porras</p>
+  <p id="footerText">© 2026 STEM Learning Hub | Developed by Professor Porras</p>
 </footer>
+
+<script>
+function setLanguage(lang) {
+  localStorage.setItem("hubLanguage", lang);
+
+  const text = {
+    en: {
+      mainTitle: "STEM Learning Hub",
+      statement: "A High-Tech STEM Learning Hub developed by Professor Porras",
+      navPre: "Pre-College",
+      navCollege: "College",
+      navAdult: "Adult Education",
+      heroTitle: "Dream. Learn. Build. Launch.",
+      heroText: "An interactive platform for STEM, Robotics, AI, Coding, IoT, Data Science, and Quantum Computing.",
+      cardPreTitle: "Pre-College Courses",
+      cardPreText: "Explore STEM foundations through hands-on learning.",
+      cardCollegeTitle: "College Courses",
+      cardCollegeText: "Develop advanced technical and career-ready skills.",
+      cardAdultTitle: "Adult Education",
+      cardAdultText: "Upskill, reskill, and grow professionally.",
+      enterPre: "Enter",
+      enterCollege: "Enter",
+      enterAdult: "Enter",
+      footerText: "© 2026 STEM Learning Hub | Developed by Professor Porras"
+    },
+    es: {
+      mainTitle: "STEM Learning Hub",
+      statement: "Un Hub STEM de alta tecnología desarrollado por el Profesor Porras",
+      navPre: "Pre-College",
+      navCollege: "College",
+      navAdult: "Educación para Adultos",
+      heroTitle: "Sueña. Aprende. Construye. Lanza.",
+      heroText: "Una plataforma interactiva para STEM, Robótica, AI, Programación, IoT, Ciencia de Datos y Computación Cuántica.",
+      cardPreTitle: "Cursos Pre-College",
+      cardPreText: "Explora fundamentos STEM mediante aprendizaje práctico.",
+      cardCollegeTitle: "Cursos College",
+      cardCollegeText: "Desarrolla habilidades técnicas avanzadas y listas para la carrera profesional.",
+      cardAdultTitle: "Educación para Adultos",
+      cardAdultText: "Actualiza tus habilidades, cambia de carrera y crece profesionalmente.",
+      enterPre: "Entrar",
+      enterCollege: "Entrar",
+      enterAdult: "Entrar",
+      footerText: "© 2026 STEM Learning Hub | Desarrollado por el Profesor Porras"
+    }
+  };
+
+  for (let key in text[lang]) {
+    document.getElementById(key).innerText = text[lang][key];
+  }
+}
+
+setLanguage(localStorage.getItem("hubLanguage") || "en");
+</script>
 
 </body>
 </html>
