@@ -1,1 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration | STEM Learning Hub</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
 
+<body>
+
+<header class="main-header">
+  <h1>Student Registration</h1>
+
+  <p class="statement">
+    Register to begin your learning journey with STEM Learning Hub
+  </p>
+
+  <nav class="main-menu">
+    <a href="../index.html">Home</a>
+    <a href="precollege.html">Pre-College</a>
+    <a href="college.html">College</a>
+    <a href="adult.html">Adult Education</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Enrollment Form</h2>
+  <p>Please complete the information below to start the registration process.</p>
+</section>
+
+<section class="registration-container">
+
+  <form id="registrationForm" class="registration-form">
+
+    <label>Full Name</label>
+    <input type="text" id="fullName" required placeholder="Enter full name">
+
+    <label>Email Address</label>
+    <input type="email" id="email" required placeholder="Enter email address">
+
+    <label>Phone Number</label>
+    <input type="tel" id="phone" required placeholder="Enter phone number">
+
+    <label>Select Program Category</label>
+    <select id="category" required>
+      <option value="">Select one option</option>
+      <option value="Pre-College">Pre-College</option>
+      <option value="College">College</option>
+      <option value="Adult Education">Adult Education</option>
+    </select>
+
+    <label>Select Course</label>
+    <select id="course" required>
+      <option value="">Select one course</option>
+
+      <option value="Coding Fundamentals">Coding Fundamentals</option>
+      <option value="Robotics & Electronics">Robotics & Electronics</option>
+      <option value="AI & Digital Creativity">AI & Digital Creativity</option>
+
+      <option value="Quantum Computing Foundations">Quantum Computing Foundations</option>
+      <option value="IoT & Embedded Systems">IoT & Embedded Systems</option>
+      <option value="Fundamentals of Telecommunications">Fundamentals of Telecommunications</option>
+
+      <option value="AI for Professionals">AI for Professionals</option>
+      <option value="Cloud & Digital Infrastructure">Cloud & Digital Infrastructure</option>
+      <option value="Technology Project Management">Technology Project Management</option>
+    </select>
+
+    <label>Preferred Language</label>
+    <select id="language" required>
+      <option value="">Select language</option>
+      <option value="English">English</option>
+      <option value="Spanish">Spanish</option>
+      <option value="Bilingual">Bilingual</option>
+    </select>
+
+    <label>Payment Option</label>
+    <select id="paymentOption" required>
+      <option value="">Select payment option</option>
+      <option value="Pay Now">Pay Now</option>
+      <option value="Request Invoice">Request Invoice</option>
+      <option value="Pay Later">Pay Later</option>
+    </select>
+
+    <button type="submit">Submit Registration</button>
+
+  </form>
+
+  <div id="confirmationMessage" class="confirmation-message"></div>
+
+</section>
+
+<footer>
+  <p>© 2026 STEM Learning Hub | Developed by Professor Porras</p>
+</footer>
+
+<script>
+document.getElementById("registrationForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const student = {
+    fullName: document.getElementById("fullName").value,
+    email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value,
+    category: document.getElementById("category").value,
+    course: document.getElementById("course").value,
+    language: document.getElementById("language").value,
+    paymentOption: document.getElementById("paymentOption").value,
+    status: "Pending Review"
+  };
+
+  localStorage.setItem("studentRegistration", JSON.stringify(student));
+
+  document.getElementById("confirmationMessage").innerHTML = `
+    <h3>Registration Submitted Successfully!</h3>
+    <p>Thank you, ${student.fullName}. Your registration for <strong>${student.course}</strong> has been received.</p>
+    <p>Status: <strong>Pending Review</strong></p>
+  `;
+
+  document.getElementById("registrationForm").reset();
+});
+</script>
+
+</body>
+</html>
