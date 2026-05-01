@@ -1,1 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | STEM Learning Hub</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
 
+<body>
+
+<header class="main-header">
+  <h1>Student Login</h1>
+  <p class="statement">Access your STEM Learning Hub dashboard.</p>
+
+  <nav class="main-menu">
+    <a href="../index.html">Home</a>
+    <a href="register.html">Register</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Login to Your Account</h2>
+</section>
+
+<section class="registration-container">
+  <form id="loginForm" class="registration-form">
+
+    <label>Email Address</label>
+    <input type="email" id="loginEmail" required>
+
+    <label>Password</label>
+    <input type="password" id="loginPassword" required>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <div id="loginMessage" class="confirmation-message"></div>
+</section>
+
+<footer>
+  <p>© 2026 STEM Learning Hub | Developed by Professor Porras</p>
+</footer>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const savedStudent = JSON.parse(localStorage.getItem("studentAccount"));
+
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  if (!savedStudent) {
+    document.getElementById("loginMessage").innerHTML = "<p>No account found. Please register first.</p>";
+    return;
+  }
+
+  if (email === savedStudent.email && password === savedStudent.password) {
+    localStorage.setItem("loggedInStudent", JSON.stringify(savedStudent));
+    window.location.href = "dashboard.html";
+  } else {
+    document.getElementById("loginMessage").innerHTML = "<p>Invalid email or password. Please try again.</p>";
+  }
+});
+</script>
+
+</body>
+</html>
