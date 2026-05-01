@@ -1,1 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | STEM Learning Hub</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
 
+<body>
+
+<header class="main-header">
+  <h1>Student Dashboard</h1>
+  <p class="statement">Welcome to your STEM Learning Hub learning space.</p>
+
+  <nav class="main-menu">
+    <a href="../index.html">Home</a>
+    <a href="precollege.html">Pre-College</a>
+    <a href="college.html">College</a>
+    <a href="adult.html">Adult Education</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2 id="welcomeMessage">Welcome</h2>
+  <p id="courseInfo"></p>
+</section>
+
+<section class="cards">
+  <div class="card">
+    <h3>My Course</h3>
+    <p id="studentCourse"></p>
+    <a id="courseLink" href="#">Go to Course</a>
+  </div>
+
+  <div class="card">
+    <h3>Payment Status</h3>
+    <p id="paymentStatus"></p>
+  </div>
+
+  <div class="card">
+    <h3>Account Status</h3>
+    <p id="accountStatus"></p>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 STEM Learning Hub | Developed by Professor Porras</p>
+</footer>
+
+<script>
+const student = JSON.parse(localStorage.getItem("loggedInStudent"));
+
+if (!student) {
+  window.location.href = "login.html";
+}
+
+document.getElementById("welcomeMessage").innerText = "Welcome, " + student.fullName;
+document.getElementById("courseInfo").innerText = "You are enrolled in: " + student.course;
+document.getElementById("studentCourse").innerText = student.course;
+document.getElementById("paymentStatus").innerText = student.paymentStatus;
+document.getElementById("accountStatus").innerText = student.accountStatus;
+
+document.getElementById("courseLink").href = "../courses/course-template.html?course=" + encodeURIComponent(student.course);
+
+function logout() {
+  localStorage.removeItem("loggedInStudent");
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
