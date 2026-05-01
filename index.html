@@ -2,142 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>High Tech Learning Hub</title>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0b1d2a;
-      color: white;
-      margin: 0;
-      text-align: center;
-    }
-
-    nav {
-      background: #132f4c;
-      padding: 15px;
-    }
-
-    nav a {
-      color: white;
-      margin: 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    header {
-      padding: 60px 20px;
-      background: linear-gradient(135deg, #132f4c, #0b1d2a);
-    }
-
-    h1 {
-      font-size: 46px;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      font-size: 20px;
-      color: #d6eaff;
-    }
-
-    .container {
-      padding: 40px 20px;
-    }
-
-    .cards {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 25px;
-      margin-top: 30px;
-    }
-
-    .card {
-      background: #132f4c;
-      width: 280px;
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0, 170, 255, 0.25);
-    }
-
-    .card h2 {
-      color: #00aaff;
-    }
-
-    .card p {
-      font-size: 16px;
-      line-height: 1.5;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 12px 22px;
-      background: #00aaff;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-
-    .btn:hover {
-      background: #0088cc;
-    }
-
-    footer {
-      margin-top: 40px;
-      padding: 20px;
-      background: #081520;
-      color: #b8c7d9;
-      font-size: 14px;
-    }
-  </style>
+  <title>STEM Learning Hub</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
+<header>
+  <h1>🚀 STEM Learning Hub</h1>
   <nav>
-    <a href="index.html">Home</a>
-    <a href="pre-college.html">Pre-College</a>
-    <a href="college.html">College</a>
-    <a href="arduino-labs.html">Arduino Labs</a>
+    <a href="pages/precollege.html">Pre-College</a>
+    <a href="pages/college.html">College</a>
+    <a href="pages/adult.html">Adult Education</a>
   </nav>
+</header>
 
-  <header>
-    <h1>🚀 High Tech Learning Hub</h1>
-    <p class="subtitle">STEM | Robotics | AI | Quantum Computing | Arduino Labs</p>
-  </header>
+<section class="hero">
+  <h2>Build Your Future in STEM</h2>
+</section>
 
-  <div class="container">
-    <h2>Choose Your Learning Path</h2>
-    <p>Explore high-tech learning experiences designed for students, small groups, and future innovators.</p>
-
-    <div class="cards">
-
-      <div class="card">
-        <h2>📘 Pre-College</h2>
-        <p>Build strong foundations in Algebra, Coding, Robotics, and problem-solving.</p>
-        <a class="btn" href="pre-college.html">Enter Track</a>
-      </div>
-
-      <div class="card">
-        <h2>🎓 College</h2>
-        <p>Explore advanced STEM topics including Python, Engineering, and Quantum Computing.</p>
-        <a class="btn" href="college.html">Enter Track</a>
-      </div>
-
-      <div class="card">
-        <h2>🔌 Arduino Labs</h2>
-        <p>Connect theory with real-world electronics, sensors, motors, and hands-on projects.</p>
-        <a class="btn" href="arduino-labs.html">Enter Labs</a>
-      </div>
-
-    </div>
+<div class="cards">
+  <div class="card">
+    <h3>Pre-College</h3>
+    <a href="pages/precollege.html">Enter</a>
   </div>
 
-  <footer>
-    High Tech Learning Hub | Developed by Professor Héctor Porras
-  </footer>
+  <div class="card">
+    <h3>College</h3>
+    <a href="pages/college.html">Enter</a>
+  </div>
+
+  <div class="card">
+    <h3>Adult Education</h3>
+    <a href="pages/adult.html">Enter</a>
+  </div>
+</div>
 
 </body>
 </html>
