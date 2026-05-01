@@ -2,94 +2,287 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Course</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course | STEM Learning Hub</title>
   <link rel="stylesheet" href="../styles.css">
-
-  <style>
-    .container {
-      text-align: center;
-      padding: 30px;
-    }
-
-    .modules {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 30px;
-    }
-
-    .card {
-      background: #122b44;
-      padding: 20px;
-      border-radius: 12px;
-      width: 250px;
-      box-shadow: 0 0 10px rgba(0,224,255,0.3);
-    }
-
-    .card h3 {
-      margin-bottom: 10px;
-    }
-
-    button {
-      margin: 5px;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      background: #00e0ff;
-      color: black;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background: #00bcd4;
-    }
-  </style>
 </head>
 
 <body>
 
-<div class="container">
+<header class="main-header">
+  <h1 id="courseTitle">Course</h1>
+  <p class="statement">Complete lessons, practices, and graded quizzes.</p>
 
-  <h1 id="courseTitle">Course Name</h1>
-  <p>Welcome to this course. Select a module below.</p>
+  <nav class="main-menu">
+    <a href="../index.html">Home</a>
+    <a href="../pages/dashboard.html">Dashboard</a>
+    <a href="../pages/precollege.html">Pre-College</a>
+    <a href="../pages/college.html">College</a>
+    <a href="../pages/adult.html">Adult Education</a>
+  </nav>
+</header>
 
-  <div class="modules" id="modulesContainer"></div>
+<section class="hero">
+  <h2 id="progressTitle">Course Progress: 0%</h2>
+  <p id="progressMessage">Start Module 1 to begin your learning journey.</p>
+</section>
 
-</div>
+<section class="container">
+  <div id="modulesContainer" class="modules"></div>
+</section>
+
+<footer>
+  <p>© 2026 STEM Learning Hub | Developed by Professor Porras</p>
+</footer>
 
 <script>
-  // Get course name from URL
-  const params = new URLSearchParams(window.location.search);
-  const course = params.get("course") || "Course";
+const params = new URLSearchParams(window.location.search);
+const courseName = params.get("course") || "STEM Course";
 
-  document.getElementById("courseTitle").innerText = course;
+document.getElementById("courseTitle").innerText = courseName;
 
-  // Generate 5 Modules dynamically
-  let content = "";
+const courseKey = "progress_" + courseName.replace(/\s+/g, "_");
 
-  for (let i = 1; i <= 5; i++) {
-    content += `
-      <div class="card">
-        <h3>Module ${i}</h3>
-        <p>Lesson content for Module ${i}</p>
-        <button onclick="openPractice(${i})">Practice</button>
-        <button onclick="openQuiz(${i})">Quiz</button>
+let progress = JSON.parse(localStorage.getItem(courseKey)) || {
+  completedModules: [],
+  quizScores: {}
+};
+
+const courseModules = [
+  {
+    title: "Module 1: Foundations",
+    lesson: "In this module, students learn the essential foundations of the course. The goal is to understand the basic vocabulary, key concepts, and real-world purpose of this subject.",
+    practice: "Practice: Write three examples of how this topic is used in real life. Then explain one example in your own words.",
+    quiz: [
+      {
+        question: "What is the main purpose of Module 1?",
+        options: ["To memorize random facts", "To understand the foundations", "To skip the course", "To complete billing"],
+        answer: "To understand the foundations"
+      },
+      {
+        question: "Why are real-world examples important?",
+        options: ["They make learning practical", "They are not useful", "They replace practice", "They remove quizzes"],
+        answer: "They make learning practical"
+      },
+      {
+        question: "What should students do after the lesson?",
+        options: ["Close the page", "Complete the practice and quiz", "Ignore the module", "Delete progress"],
+        answer: "Complete the practice and quiz"
+      }
+    ]
+  },
+  {
+    title: "Module 2: Core Concepts",
+    lesson: "This module introduces the most important technical concepts connected to the course. Students begin connecting ideas and building deeper understanding.",
+    practice: "Practice: Create a short concept map showing at least four important ideas from this module.",
+    quiz: [
+      {
+        question: "What does this module focus on?",
+        options: ["Core concepts", "Only design colors", "Account settings", "Unrelated topics"],
+        answer: "Core concepts"
+      },
+      {
+        question: "What helps organize ideas visually?",
+        options: ["Concept map", "Password", "Payment card", "Browser cache"],
+        answer: "Concept map"
+      },
+      {
+        question: "What is a good learning strategy?",
+        options: ["Connect ideas", "Avoid practice", "Guess only", "Skip lessons"],
+        answer: "Connect ideas"
+      }
+    ]
+  },
+  {
+    title: "Module 3: Tools and Applications",
+    lesson: "Students explore tools, platforms, devices, or software commonly used in this field. The focus is on applying knowledge, not only reading about it.",
+    practice: "Practice: Identify one tool used in this field and describe what it does, who uses it, and why it is important.",
+    quiz: [
+      {
+        question: "What is the focus of Module 3?",
+        options: ["Tools and applications", "Only theory", "No activities", "Deleting courses"],
+        answer: "Tools and applications"
+      },
+      {
+        question: "Why are tools important?",
+        options: ["They help apply knowledge", "They stop learning", "They remove projects", "They are not useful"],
+        answer: "They help apply knowledge"
+      },
+      {
+        question: "What should students describe in the practice?",
+        options: ["A useful tool", "A random password", "A billing issue", "A browser error"],
+        answer: "A useful tool"
+      }
+    ]
+  },
+  {
+    title: "Module 4: Real-World Project",
+    lesson: "This module connects learning to a real-world problem. Students begin thinking like builders, designers, technicians, engineers, or professionals.",
+    practice: "Practice: Propose a small project idea using what you learned. Include the problem, solution, and tools needed.",
+    quiz: [
+      {
+        question: "What does Module 4 emphasize?",
+        options: ["Real-world projects", "Only reading", "No thinking", "Unrelated content"],
+        answer: "Real-world projects"
+      },
+      {
+        question: "What should a project idea include?",
+        options: ["Problem, solution, and tools", "Only a title", "Only a password", "Only payment status"],
+        answer: "Problem, solution, and tools"
+      },
+      {
+        question: "What mindset does this module develop?",
+        options: ["Builder mindset", "Passive mindset", "Guessing mindset", "Avoidance mindset"],
+        answer: "Builder mindset"
+      }
+    ]
+  },
+  {
+    title: "Module 5: Final Review and Capstone",
+    lesson: "This final module reviews the course and prepares students to demonstrate what they learned through a capstone-style activity.",
+    practice: "Practice: Prepare a short final reflection explaining what you learned, what you built, and how this course can help your future.",
+    quiz: [
+      {
+        question: "What is the goal of Module 5?",
+        options: ["Final review and capstone", "Start over", "Remove all progress", "Ignore the course"],
+        answer: "Final review and capstone"
+      },
+      {
+        question: "What should the final reflection include?",
+        options: ["Learning, project, and future application", "Only name", "Only email", "Only login"],
+        answer: "Learning, project, and future application"
+      },
+      {
+        question: "What does a capstone help demonstrate?",
+        options: ["What the student learned", "Nothing important", "Only billing", "Only navigation"],
+        answer: "What the student learned"
+      }
+    ]
+  }
+];
+
+function renderModules() {
+  const container = document.getElementById("modulesContainer");
+  container.innerHTML = "";
+
+  courseModules.forEach((module, index) => {
+    const moduleNumber = index + 1;
+    const isCompleted = progress.completedModules.includes(moduleNumber);
+    const score = progress.quizScores[moduleNumber];
+
+    let quizHTML = "";
+
+    module.quiz.forEach((q, qIndex) => {
+      quizHTML += `
+        <div class="quiz-question">
+          <p><strong>Question ${qIndex + 1}:</strong> ${q.question}</p>
+          ${q.options.map(option => `
+            <label>
+              <input type="radio" name="module${moduleNumber}_q${qIndex}" value="${option}">
+              ${option}
+            </label><br>
+          `).join("")}
+        </div>
+      `;
+    });
+
+    container.innerHTML += `
+      <div class="card module-card">
+        <h3>${module.title}</h3>
+
+        <h4>Lesson</h4>
+        <p>${module.lesson}</p>
+
+        <h4>Practice</h4>
+        <p>${module.practice}</p>
+
+        <h4>Graded Quiz</h4>
+        ${quizHTML}
+
+        <button onclick="gradeQuiz(${moduleNumber})">Submit Quiz</button>
+        <button onclick="markComplete(${moduleNumber})">Mark Module Complete</button>
+
+        <p id="score${moduleNumber}">
+          ${score !== undefined ? "Quiz Score: " + score + "%" : "Quiz Score: Not submitted yet"}
+        </p>
+
+        <p>
+          Status:
+          <strong>${isCompleted ? "Completed" : "Not Completed"}</strong>
+        </p>
       </div>
     `;
+  });
+
+  updateProgress();
+}
+
+function gradeQuiz(moduleNumber) {
+  const module = courseModules[moduleNumber - 1];
+  let correct = 0;
+
+  module.quiz.forEach((q, qIndex) => {
+    const selected = document.querySelector(`input[name="module${moduleNumber}_q${qIndex}"]:checked`);
+
+    if (selected && selected.value === q.answer) {
+      correct++;
+    }
+  });
+
+  const score = Math.round((correct / module.quiz.length) * 100);
+
+  progress.quizScores[moduleNumber] = score;
+  localStorage.setItem(courseKey, JSON.stringify(progress));
+
+  document.getElementById("score" + moduleNumber).innerText = "Quiz Score: " + score + "%";
+
+  if (score >= 70) {
+    alert("Great job! You passed this quiz with " + score + "%.");
+  } else {
+    alert("You scored " + score + "%. Please review the lesson and try again.");
   }
 
-  document.getElementById("modulesContainer").innerHTML = content;
+  updateProgress();
+}
 
-  // Functions
-  function openPractice(module) {
-    alert("Opening Practice for Module " + module);
+function markComplete(moduleNumber) {
+  const score = progress.quizScores[moduleNumber];
+
+  if (score === undefined) {
+    alert("Please submit the quiz before marking this module complete.");
+    return;
   }
 
-  function openQuiz(module) {
-    alert("Opening Quiz for Module " + module);
+  if (score < 70) {
+    alert("You need at least 70% to complete this module.");
+    return;
   }
+
+  if (!progress.completedModules.includes(moduleNumber)) {
+    progress.completedModules.push(moduleNumber);
+  }
+
+  localStorage.setItem(courseKey, JSON.stringify(progress));
+  renderModules();
+}
+
+function updateProgress() {
+  const completed = progress.completedModules.length;
+  const total = courseModules.length;
+  const percent = Math.round((completed / total) * 100);
+
+  document.getElementById("progressTitle").innerText = "Course Progress: " + percent + "%";
+
+  if (percent === 0) {
+    document.getElementById("progressMessage").innerText = "Start Module 1 to begin your learning journey.";
+  } else if (percent < 100) {
+    document.getElementById("progressMessage").innerText = completed + " of " + total + " modules completed.";
+  } else {
+    document.getElementById("progressMessage").innerText = "Congratulations! You completed this course.";
+  }
+}
+
+renderModules();
 </script>
 
 </body>
