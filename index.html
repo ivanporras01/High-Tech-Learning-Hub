@@ -2,122 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>STEM Learning Hub</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #06111f, #0b1f33);
-      color: white;
-    }
-
-    .main-header {
-      text-align: center;
-      padding: 40px 20px;
-      background: #06111f;
-    }
-
-    .logo {
-      width: 520px;
-      max-width: 90%;
-      border-radius: 18px;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      font-size: 42px;
-      margin: 10px 0;
-    }
-
-    .statement {
-      color: #00e0ff;
-      font-size: 20px;
-      margin-bottom: 25px;
-    }
-
-    nav a {
-      color: #00e0ff;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 50px 20px;
-    }
-
-    .hero h2 {
-      font-size: 38px;
-    }
-
-    .hero p {
-      color: #c9e8f2;
-      font-size: 20px;
-    }
-
-    .cards {
-      display: flex;
-      justify-content: center;
-      gap: 25px;
-      flex-wrap: wrap;
-      padding: 30px;
-    }
-
-    .card {
-      background: #122b44;
-      width: 280px;
-      padding: 30px;
-      border-radius: 18px;
-      text-align: center;
-      box-shadow: 0 0 18px rgba(0, 224, 255, 0.25);
-    }
-
-    .card h3 {
-      font-size: 24px;
-    }
-
-    .card p {
-      color: #d7eef7;
-    }
-
-    .card a {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 12px 22px;
-      background: #00e0ff;
-      color: #06111f;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .card a:hover {
-      background: #00bcd4;
-    }
-  </style>
-
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
+<!-- ===== HEADER ===== -->
 <header class="main-header">
 
   <!-- LOGO -->
   <img src="assets/stem-logo.png" alt="STEM Learning Hub Logo" class="logo">
 
+  <!-- TITLE -->
   <h1>STEM Learning Hub</h1>
 
+  <!-- STATEMENT -->
   <p class="statement">
     A High-Tech STEM Learning Hub developed by Professor Porras
   </p>
 
+  <!-- NAVIGATION -->
   <nav>
     <a href="pages/precollege.html">Pre-College</a>
     <a href="pages/college.html">College</a>
@@ -126,27 +34,32 @@
 
 </header>
 
+<!-- ===== HERO SECTION ===== -->
 <section class="hero">
   <h2>Dream. Learn. Build. Launch.</h2>
   <p>
-    An interactive learning platform for STEM, Robotics, AI, Coding, IoT, Data, and Quantum Computing.
+    An interactive platform for STEM, Robotics, AI, Coding, IoT, Data Science, and Quantum Computing.
   </p>
 </section>
 
+<!-- ===== COURSE CARDS ===== -->
 <section class="cards">
 
+  <!-- PRE-COLLEGE -->
   <div class="card">
     <h3>Pre-College Courses</h3>
-    <p>Explore STEM foundations through engaging projects.</p>
+    <p>Explore STEM foundations through hands-on learning.</p>
     <a href="pages/precollege.html">Enter</a>
   </div>
 
+  <!-- COLLEGE -->
   <div class="card">
     <h3>College Courses</h3>
-    <p>Build advanced technical and career-ready skills.</p>
+    <p>Develop advanced technical and career-ready skills.</p>
     <a href="pages/college.html">Enter</a>
   </div>
 
+  <!-- ADULT -->
   <div class="card">
     <h3>Adult Education</h3>
     <p>Upskill, reskill, and grow professionally.</p>
@@ -154,6 +67,11 @@
   </div>
 
 </section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>© 2026 STEM Learning Hub | Developed by Professor Porras</p>
+</footer>
 
 </body>
 </html>
