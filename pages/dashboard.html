@@ -18,6 +18,7 @@
     <a href="precollege.html">Pre-College</a>
     <a href="college.html">College</a>
     <a href="adult.html">Adult Education</a>
+    <a href="billing.html">Billing</a>
     <a href="#" onclick="logout()">Logout</a>
   </nav>
 </header>
@@ -28,10 +29,17 @@
 </section>
 
 <section class="cards">
+
   <div class="card">
     <h3>My Course</h3>
     <p id="studentCourse"></p>
     <a id="courseLink" href="#">Go to Course</a>
+  </div>
+
+  <div class="card">
+    <h3>Billing</h3>
+    <p>Manage your payment or request an invoice.</p>
+    <a href="billing.html">Go to Billing</a>
   </div>
 
   <div class="card">
@@ -43,6 +51,7 @@
     <h3>Account Status</h3>
     <p id="accountStatus"></p>
   </div>
+
 </section>
 
 <footer>
@@ -54,15 +63,16 @@ const student = JSON.parse(localStorage.getItem("loggedInStudent"));
 
 if (!student) {
   window.location.href = "login.html";
+} else {
+  document.getElementById("welcomeMessage").innerText = "Welcome, " + student.fullName;
+  document.getElementById("courseInfo").innerText = "You are enrolled in: " + student.course;
+  document.getElementById("studentCourse").innerText = student.course;
+  document.getElementById("paymentStatus").innerText = student.paymentStatus || "Pending";
+  document.getElementById("accountStatus").innerText = student.accountStatus || "Active";
+
+  document.getElementById("courseLink").href =
+    "../courses/course-template.html?course=" + encodeURIComponent(student.course);
 }
-
-document.getElementById("welcomeMessage").innerText = "Welcome, " + student.fullName;
-document.getElementById("courseInfo").innerText = "You are enrolled in: " + student.course;
-document.getElementById("studentCourse").innerText = student.course;
-document.getElementById("paymentStatus").innerText = student.paymentStatus;
-document.getElementById("accountStatus").innerText = student.accountStatus;
-
-document.getElementById("courseLink").href = "../courses/course-template.html?course=" + encodeURIComponent(student.course);
 
 function logout() {
   localStorage.removeItem("loggedInStudent");
