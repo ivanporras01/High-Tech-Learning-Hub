@@ -1,1 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing | STEM Learning Hub</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
 
+<body>
+
+<header class="main-header">
+  <h1>Billing & Payment</h1>
+
+  <nav class="main-menu">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="../index.html">Home</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Complete Your Enrollment</h2>
+  <p>Select your payment option below.</p>
+</section>
+
+<section class="cards">
+
+  <div class="card">
+    <h3>Pay Now</h3>
+    <p>Secure your spot immediately.</p>
+    <button onclick="payNow()">Pay Now</button>
+  </div>
+
+  <div class="card">
+    <h3>Request Invoice</h3>
+    <p>We will send you an invoice.</p>
+    <button onclick="requestInvoice()">Request</button>
+  </div>
+
+  <div class="card">
+    <h3>Pay Later</h3>
+    <p>Complete payment later.</p>
+    <button onclick="payLater()">Select</button>
+  </div>
+
+</section>
+
+<footer>
+  <p>© 2026 STEM Learning Hub</p>
+</footer>
+
+<script>
+function updateStatus(status) {
+  let student = JSON.parse(localStorage.getItem("loggedInStudent"));
+
+  student.paymentStatus = status;
+
+  localStorage.setItem("loggedInStudent", JSON.stringify(student));
+  localStorage.setItem("studentAccount", JSON.stringify(student));
+
+  alert("Payment status updated: " + status);
+  window.location.href = "dashboard.html";
+}
+
+function payNow() {
+  updateStatus("Paid");
+}
+
+function requestInvoice() {
+  updateStatus("Invoice Requested");
+}
+
+function payLater() {
+  updateStatus("Pending");
+}
+</script>
+
+</body>
+</html>
