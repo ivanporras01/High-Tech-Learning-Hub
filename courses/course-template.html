@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Course | STEM Learning Hub</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css" />
 </head>
 
 <body>
 
 <header class="main-header">
   <h1 id="courseTitle">Course</h1>
-  <p class="statement">Lessons, coding labs, quizzes, and progress tracking.</p>
+  <p class="statement">Lessons, PDFs, slides, videos, coding labs, quizzes, and progress tracking.</p>
 
   <nav class="main-menu">
     <a href="../index.html">Home</a>
@@ -38,7 +38,6 @@
 <script>
 const params = new URLSearchParams(window.location.search);
 const courseName = params.get("course") || "Coding Fundamentals";
-
 document.getElementById("courseTitle").innerText = courseName;
 
 const courseKey = "progress_" + courseName.replace(/\s+/g, "_");
@@ -48,291 +47,129 @@ let progress = JSON.parse(localStorage.getItem(courseKey)) || {
   quizScores: {}
 };
 
+const courseFolders = {
+  "Coding Fundamentals": "coding-fundamentals",
+  "Robotics & Electronics": "robotics-electronics",
+  "AI & Digital Creativity": "ai-digital-creativity",
+  "Quantum Computing Foundations": "quantum-computing-foundations",
+  "IoT & Embedded Systems": "iot-embedded-systems",
+  "Fundamentals of Telecommunications": "telecommunications-fundamentals",
+  "AI for Professionals": "ai-for-professionals",
+  "Cloud & Digital Infrastructure": "cloud-digital-infrastructure",
+  "Technology Project Management": "technology-project-management"
+};
+
 const courseContent = {
   "Coding Fundamentals": [
-    {
-      title: "Module 1: Introduction to Programming",
-      lesson: "Programming is the process of giving instructions to a computer. In this module, students learn what code is, why programming matters, and how Python can be used to solve problems.",
-      practice: "Open Google Colab and write a program that prints your name, age, and favorite technology.",
-      colab: "https://colab.research.google.com/#create=true",
-      sampleCode:
-`name = "Your Name"
-age = 16
-favorite_tech = "Robotics"
+    ["Introduction to Programming", "Learn what programming is, why it matters, and how computers follow instructions."],
+    ["Variables and Data Types", "Learn how to store information using variables such as text, numbers, and logical values."],
+    ["Decision Making with If Statements", "Learn how programs make decisions using conditions and logic."],
+    ["Loops and Repetition", "Learn how to repeat actions efficiently using loops."],
+    ["Mini Coding Project", "Combine variables, input, conditions, and loops to build a simple program."]
+  ],
 
-print("Hello, my name is", name)
-print("I am", age, "years old")
-print("My favorite technology is", favorite_tech)`,
-      quiz: [
-        {
-          question: "What is programming?",
-          options: ["Giving instructions to a computer", "Drawing only", "Watching videos", "Typing random words"],
-          answer: "Giving instructions to a computer"
-        },
-        {
-          question: "Which language are we using for beginner coding practice?",
-          options: ["Python", "Spanish", "HTML only", "Photoshop"],
-          answer: "Python"
-        },
-        {
-          question: "What does print() do in Python?",
-          options: ["Displays information", "Deletes files", "Turns off the computer", "Creates a password"],
-          answer: "Displays information"
-        }
-      ]
-    },
-    {
-      title: "Module 2: Variables and Data Types",
-      lesson: "Variables store information. Data types describe the kind of information being stored, such as text, numbers, or decimal values.",
-      practice: "Create variables for your name, grade level, city, and favorite subject. Then print them.",
-      colab: "https://colab.research.google.com/#create=true",
-      sampleCode:
-`student_name = "Ana"
-grade_level = 9
-city = "Miami"
-favorite_subject = "Technology"
+  "Robotics & Electronics": [
+    ["Introduction to Robotics", "Explore what robots are and how they sense, think, and act."],
+    ["Basic Electronics", "Learn about circuits, power, voltage, current, and basic components."],
+    ["Sensors and Inputs", "Understand how robots collect information from the environment."],
+    ["Motors and Outputs", "Learn how robots move and respond using motors and actuators."],
+    ["Robotics Mini Project", "Design a simple robot concept using sensors, motors, and control logic."]
+  ],
 
-print(student_name)
-print(grade_level)
-print(city)
-print(favorite_subject)`,
-      quiz: [
-        {
-          question: "What is a variable?",
-          options: ["A place to store information", "A video", "A website color", "A keyboard button"],
-          answer: "A place to store information"
-        },
-        {
-          question: "Which value is a string?",
-          options: ['"Miami"', "25", "3.14", "True"],
-          answer: '"Miami"'
-        },
-        {
-          question: "Which value is an integer?",
-          options: ["15", '"Hello"', "3.5", '"Python"'],
-          answer: "15"
-        }
-      ]
-    },
-    {
-      title: "Module 3: Decision Making with If Statements",
-      lesson: "If statements allow programs to make decisions. A program can check a condition and run different code depending on whether the condition is true or false.",
-      practice: "Write a program that checks if a student is eligible for an advanced STEM activity based on age.",
-      colab: "https://colab.research.google.com/#create=true",
-      sampleCode:
-`age = 14
+  "AI & Digital Creativity": [
+    ["What Is Artificial Intelligence?", "Understand AI, machine learning, and how intelligent systems are used today."],
+    ["Prompt Engineering Basics", "Learn how to write clear prompts to get better results from AI tools."],
+    ["Creative AI Tools", "Explore how AI can help generate text, images, ideas, and learning resources."],
+    ["Responsible AI Use", "Learn about accuracy, bias, ethics, and responsible use of AI."],
+    ["AI Creative Project", "Create a digital project using AI tools and explain your process."]
+  ],
 
-if age >= 13:
-    print("You are eligible for the advanced STEM activity.")
-else:
-    print("You are ready for the beginner STEM activity.")`,
-      quiz: [
-        {
-          question: "What does an if statement do?",
-          options: ["Makes decisions", "Deletes variables", "Changes the screen color only", "Stops learning"],
-          answer: "Makes decisions"
-        },
-        {
-          question: "Which symbol means greater than or equal to?",
-          options: [">=", "<=", "==", "!="],
-          answer: ">="
-        },
-        {
-          question: "What happens when an if condition is false?",
-          options: ["The else block may run", "The computer breaks", "The program disappears", "Nothing can happen"],
-          answer: "The else block may run"
-        }
-      ]
-    },
-    {
-      title: "Module 4: Loops and Repetition",
-      lesson: "Loops help repeat actions. Instead of writing the same instruction many times, programmers use loops to make code more efficient.",
-      practice: "Create a loop that prints your name five times. Then modify it to print numbers from 1 to 10.",
-      colab: "https://colab.research.google.com/#create=true",
-      sampleCode:
-`for i in range(5):
-    print("STEM Learning Hub")
+  "Quantum Computing Foundations": [
+    ["Introduction to Quantum Computing", "Learn why quantum computing is different from classical computing."],
+    ["Qubits and Superposition", "Understand qubits, states, and the idea of superposition."],
+    ["Quantum Gates and Circuits", "Explore how quantum gates modify qubits in a quantum circuit."],
+    ["Quantum Algorithms and Applications", "Learn where quantum computing may impact science, security, and optimization."],
+    ["Quantum Mini Project", "Create or simulate a simple quantum circuit and explain the results."]
+  ],
 
-for number in range(1, 11):
-    print(number)`,
-      quiz: [
-        {
-          question: "Why do programmers use loops?",
-          options: ["To repeat actions efficiently", "To avoid all code", "To remove variables", "To close websites"],
-          answer: "To repeat actions efficiently"
-        },
-        {
-          question: "What does range(5) create?",
-          options: ["A sequence of 5 values", "A password", "A picture", "A website"],
-          answer: "A sequence of 5 values"
-        },
-        {
-          question: "Which keyword is used for a basic loop in Python?",
-          options: ["for", "print", "name", "input"],
-          answer: "for"
-        }
-      ]
-    },
-    {
-      title: "Module 5: Mini Coding Project",
-      lesson: "In the final module, students combine variables, input, if statements, and output to build a simple interactive Python program.",
-      practice: "Build a student profile program that asks for the user's name and age, then gives a custom message.",
-      colab: "https://colab.research.google.com/#create=true",
-      sampleCode:
-`name = input("Enter your name: ")
-age = int(input("Enter your age: "))
+  "IoT & Embedded Systems": [
+    ["Introduction to IoT", "Learn how devices connect, collect data, and communicate over networks."],
+    ["Microcontrollers and Sensors", "Understand microcontrollers, sensors, and embedded systems."],
+    ["Communication Protocols", "Explore WiFi, Bluetooth, MQTT, and how devices exchange data."],
+    ["Cloud Dashboards", "Learn how IoT data can be sent to dashboards and cloud platforms."],
+    ["IoT System Project", "Design a smart device solution using sensors, connectivity, and data."]
+  ],
 
-print("Hello", name)
+  "Fundamentals of Telecommunications": [
+    ["Introduction to Telecommunications", "Understand communication systems and how information travels."],
+    ["Signals and Transmission", "Learn about analog, digital, wired, and wireless transmission."],
+    ["Networking Basics", "Explore IP addresses, routers, switches, and basic internet structure."],
+    ["Wireless and Mobile Systems", "Learn about WiFi, cellular networks, 4G, 5G, and future networks."],
+    ["Telecommunications Project", "Design a basic communication system and explain its components."]
+  ],
 
-if age >= 13:
-    print("You are ready for advanced STEM learning.")
-else:
-    print("You are ready to explore STEM foundations.")`,
-      quiz: [
-        {
-          question: "What does input() do?",
-          options: ["Receives information from the user", "Prints automatically", "Deletes code", "Creates a video"],
-          answer: "Receives information from the user"
-        },
-        {
-          question: "Why do we use int() with age?",
-          options: ["To convert input into a number", "To create a string", "To change the color", "To open a file"],
-          answer: "To convert input into a number"
-        },
-        {
-          question: "What is the purpose of the final project?",
-          options: ["Combine skills learned in the course", "Skip all modules", "Only watch videos", "Avoid coding"],
-          answer: "Combine skills learned in the course"
-        }
-      ]
-    }
+  "AI for Professionals": [
+    ["AI in the Workplace", "Learn how AI tools are changing productivity, communication, and workflows."],
+    ["Prompting for Productivity", "Create prompts for emails, summaries, planning, and analysis."],
+    ["AI Automation Basics", "Understand how AI can support repetitive tasks and business processes."],
+    ["AI Ethics and Accuracy", "Learn how to evaluate AI outputs and use AI responsibly."],
+    ["Professional AI Project", "Design an AI workflow that solves a real professional problem."]
+  ],
+
+  "Cloud & Digital Infrastructure": [
+    ["Introduction to Cloud Computing", "Understand cloud services and why organizations use the cloud."],
+    ["Cloud Service Models", "Learn the basics of IaaS, PaaS, SaaS, and cloud deployment."],
+    ["Storage, Databases, and Security", "Explore cloud storage, databases, access control, and security basics."],
+    ["Deploying Applications", "Learn how websites and applications are hosted online."],
+    ["Cloud Infrastructure Project", "Design a basic cloud solution for a real-world use case."]
+  ],
+
+  "Technology Project Management": [
+    ["Introduction to Tech Project Management", "Learn how technology projects are planned, organized, and delivered."],
+    ["Agile and Scrum Basics", "Understand sprints, roles, backlogs, and iterative development."],
+    ["Planning and Communication", "Learn how to define goals, timelines, stakeholders, and risks."],
+    ["Managing Technical Teams", "Explore leadership, collaboration, and decision-making in tech teams."],
+    ["Final Project Plan", "Create a technology project plan with scope, timeline, tasks, and deliverables."]
   ]
 };
 
-const defaultModules = [
-  {
-    title: "Module 1: Foundations",
-    lesson: "This module introduces the essential foundations of the course.",
-    practice: "Open Google Colab and write a short reflection or simple code related to this topic.",
-    colab: "https://colab.research.google.com/#create=true",
-    sampleCode: "# Start your practice here\nprint('Welcome to STEM Learning Hub')",
-    quiz: [
-      {
-        question: "What is the purpose of Module 1?",
-        options: ["Build foundations", "Skip the course", "Delete progress", "Avoid learning"],
-        answer: "Build foundations"
-      },
-      {
-        question: "Why is practice important?",
-        options: ["It helps apply learning", "It is not useful", "It replaces thinking", "It removes quizzes"],
-        answer: "It helps apply learning"
-      },
-      {
-        question: "What should students complete?",
-        options: ["Lesson, practice, and quiz", "Only the title", "Only the menu", "Nothing"],
-        answer: "Lesson, practice, and quiz"
-      }
-    ]
-  },
-  {
-    title: "Module 2: Core Concepts",
-    lesson: "This module explains the most important concepts needed to understand the subject.",
-    practice: "Use Google Colab to write notes, examples, or simple code connected to this module.",
-    colab: "https://colab.research.google.com/#create=true",
-    sampleCode: "# Module 2 practice\nconcept = 'Core Concept'\nprint(concept)",
-    quiz: [
-      {
-        question: "What does Module 2 focus on?",
-        options: ["Core concepts", "Only decoration", "Billing only", "Navigation only"],
-        answer: "Core concepts"
-      },
-      {
-        question: "What helps students learn better?",
-        options: ["Examples and practice", "Skipping everything", "Guessing only", "Closing the page"],
-        answer: "Examples and practice"
-      },
-      {
-        question: "What should students connect?",
-        options: ["Ideas and applications", "Passwords only", "Random links", "Unrelated topics"],
-        answer: "Ideas and applications"
-      }
-    ]
-  },
-  {
-    title: "Module 3: Tools and Applications",
-    lesson: "This module introduces tools and applications used in this field.",
-    practice: "Research one tool used in this area and explain its purpose.",
-    colab: "https://colab.research.google.com/#create=true",
-    sampleCode: "# Tool reflection\n tool_name = 'Example Tool'\nprint(tool_name)",
-    quiz: [
-      {
-        question: "What does Module 3 introduce?",
-        options: ["Tools and applications", "Only colors", "Only passwords", "Only billing"],
-        answer: "Tools and applications"
-      },
-      {
-        question: "Why are tools useful?",
-        options: ["They help apply knowledge", "They stop learning", "They remove practice", "They confuse everyone"],
-        answer: "They help apply knowledge"
-      },
-      {
-        question: "What should students identify?",
-        options: ["A useful tool", "A random number", "Only a menu", "A broken link"],
-        answer: "A useful tool"
-      }
-    ]
-  },
-  {
-    title: "Module 4: Real-World Activity",
-    lesson: "This module connects the course to real-world problems and solutions.",
-    practice: "Propose a small project idea connected to this course.",
-    colab: "https://colab.research.google.com/#create=true",
-    sampleCode: "# Project idea\nproject = 'My STEM Project'\nprint(project)",
-    quiz: [
-      {
-        question: "What is the focus of Module 4?",
-        options: ["Real-world application", "Skipping content", "Deleting files", "Only login"],
-        answer: "Real-world application"
-      },
-      {
-        question: "What should a project idea include?",
-        options: ["Problem and solution", "Only a name", "Only an email", "Only a button"],
-        answer: "Problem and solution"
-      },
-      {
-        question: "What mindset does this build?",
-        options: ["Builder mindset", "Passive mindset", "Avoidance mindset", "Guessing only"],
-        answer: "Builder mindset"
-      }
-    ]
-  },
-  {
-    title: "Module 5: Final Review and Capstone",
-    lesson: "This module reviews the course and prepares students for a final capstone activity.",
-    practice: "Create a final reflection explaining what you learned and how you can apply it.",
-    colab: "https://colab.research.google.com/#create=true",
-    sampleCode: "# Final reflection\nprint('I completed this STEM course!')",
-    quiz: [
-      {
-        question: "What is the goal of Module 5?",
-        options: ["Review and capstone", "Start over", "Ignore the course", "Remove progress"],
-        answer: "Review and capstone"
-      },
-      {
-        question: "What should the final reflection include?",
-        options: ["What was learned and how it applies", "Only name", "Only password", "Only billing"],
-        answer: "What was learned and how it applies"
-      },
-      {
-        question: "What does a capstone demonstrate?",
-        options: ["Learning and application", "Nothing", "Only navigation", "Only payment"],
-        answer: "Learning and application"
-      }
-    ]
-  }
-];
+function createQuiz(moduleTitle) {
+  return [
+    {
+      question: "What is the main focus of this module?",
+      options: [moduleTitle, "Billing only", "Skipping the course", "Changing the website color"],
+      answer: moduleTitle
+    },
+    {
+      question: "Why is practice important in this module?",
+      options: ["It helps apply learning", "It replaces all lessons", "It removes quizzes", "It is not useful"],
+      answer: "It helps apply learning"
+    },
+    {
+      question: "What should students do after reviewing the lesson materials?",
+      options: ["Complete the practice and quiz", "Close the course", "Ignore the module", "Delete progress"],
+      answer: "Complete the practice and quiz"
+    }
+  ];
+}
 
-const courseModules = courseContent[courseName] || defaultModules;
+const selectedCourseModules = courseContent[courseName] || courseContent["Coding Fundamentals"];
+const courseFolder = courseFolders[courseName] || "coding-fundamentals";
+
+const courseModules = selectedCourseModules.map((item, index) => {
+  const moduleNumber = index + 1;
+  return {
+    title: "Module " + moduleNumber + ": " + item[0],
+    lesson: item[1],
+    folder: "../content/" + courseFolder + "/module" + moduleNumber + "/",
+    colab: "https://colab.research.google.com/#create=true",
+    sampleCode:
+`# ${courseName} - Module ${moduleNumber}
+print("Welcome to ${courseName}")
+print("This is Module ${moduleNumber}: ${item[0]}")`,
+    quiz: createQuiz(item[0])
+  };
+});
 
 function renderModules() {
   const container = document.getElementById("modulesContainer");
@@ -363,14 +200,19 @@ function renderModules() {
       <div class="card module-card">
         <h3>${module.title}</h3>
 
-        <h4>Lesson</h4>
+        <h4>Lesson Overview</h4>
         <p>${module.lesson}</p>
 
-        <h4>Practice Lab</h4>
-        <p>${module.practice}</p>
-        <a href="${module.colab}" target="_blank">Open Google Colab Lab</a>
+        <h4>Lesson Materials</h4>
+        <a class="material-button" href="${module.folder}lesson.pdf" target="_blank">Open Lesson PDF</a>
+        <a class="material-button" href="${module.folder}slides.pptx" target="_blank">Download PPT Slides</a>
+        <a class="material-button" href="${module.folder}video.txt" target="_blank">Open Video Link</a>
 
-        <h4>Sample Code</h4>
+        <h4>Practice Lab</h4>
+        <p>Use Google Colab to complete the practice activity for this module.</p>
+        <a class="material-button" href="${module.colab}" target="_blank">Open Google Colab Lab</a>
+
+        <h4>Sample Starter Code</h4>
         <pre>${module.sampleCode}</pre>
 
         <h4>Graded Quiz</h4>
@@ -397,14 +239,12 @@ function gradeQuiz(moduleNumber) {
 
   module.quiz.forEach((q, qIndex) => {
     const selected = document.querySelector(`input[name="module${moduleNumber}_q${qIndex}"]:checked`);
-
     if (selected && selected.value === q.answer) {
       correct++;
     }
   });
 
   const score = Math.round((correct / module.quiz.length) * 100);
-
   progress.quizScores[moduleNumber] = score;
   localStorage.setItem(courseKey, JSON.stringify(progress));
 
