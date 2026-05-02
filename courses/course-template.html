@@ -11,7 +11,7 @@
 
 <header class="main-header">
   <h1 id="courseTitle">Course</h1>
-  <p class="statement">Lessons, PDFs, slides, videos, coding labs, quizzes, and progress tracking.</p>
+  <p class="statement">Lessons, summaries, videos, coding labs, quizzes, and progress tracking.</p>
 
   <nav class="main-menu">
     <a href="../index.html">Home</a>
@@ -203,19 +203,23 @@ function renderModules() {
         <h4>Lesson Overview</h4>
         <p>${module.lesson}</p>
 
-        <h4>Lesson Materials</h4>
-        <a class="material-button" href="${module.folder}lesson.pdf" target="_blank">Open Lesson PDF</a>
-        <a class="material-button" href="${module.folder}slides.pptx" target="_blank">Download PPT Slides</a>
-        <a class="material-button" href="${module.folder}video.txt" target="_blank">Open Video Link</a>
+        <h4>Step 1: Full Lesson</h4>
+        <a class="material-button" href="${module.folder}lesson.pdf" target="_blank">📘 Open Full Lesson PDF</a>
 
-        <h4>Practice Lab</h4>
+        <h4>Step 2: Quick Review</h4>
+        <a class="material-button" href="${module.folder}summary.pdf" target="_blank">🧾 Open 1-Page Summary PDF</a>
+
+        <h4>Step 3: Video Lesson</h4>
+        <a class="material-button" href="${module.folder}video.txt" target="_blank">🎥 Open Video Link</a>
+
+        <h4>Step 4: Practice Lab</h4>
         <p>Use Google Colab to complete the practice activity for this module.</p>
-        <a class="material-button" href="${module.colab}" target="_blank">Open Google Colab Lab</a>
+        <a class="material-button" href="${module.colab}" target="_blank">💻 Open Google Colab Lab</a>
 
         <h4>Sample Starter Code</h4>
         <pre>${module.sampleCode}</pre>
 
-        <h4>Graded Quiz</h4>
+        <h4>Step 5: Graded Quiz</h4>
         ${quizHTML}
 
         <button onclick="gradeQuiz(${moduleNumber})">Submit Quiz</button>
