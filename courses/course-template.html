@@ -2,372 +2,135 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Course | STEM Learning Hub</title>
-  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../styles.css"/>
 </head>
 
 <body>
 
 <header class="main-header">
   <h1 id="courseTitle">Course</h1>
-  <p class="statement">Lessons, summaries, videos, practice labs, quizzes, and progress tracking.</p>
-
-  <nav class="main-menu">
-    <a href="../index.html">Home</a>
-    <a href="../pages/dashboard.html">Dashboard</a>
-    <a href="../pages/precollege.html">Pre-College</a>
-    <a href="../pages/college.html">College</a>
-    <a href="../pages/adult.html">Adult Education</a>
-  </nav>
+  <p class="statement">Lessons, summaries, videos, labs, quizzes, and progress tracking.</p>
 </header>
 
 <section class="hero">
   <h2 id="progressTitle">Course Progress: 0%</h2>
-  <div class="progress-bar">
-    <div id="progressFill" class="progress-fill"></div>
-  </div>
-  <p id="progressMessage">Start Module 1 to begin your learning journey.</p>
+  <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
 </section>
 
 <section class="container">
   <div id="modulesContainer" class="modules"></div>
 </section>
 
-<footer>
-  <p>© 2026 STEM Learning Hub | Developed by Professor Porras</p>
-</footer>
-
 <script>
-const params = new URLSearchParams(window.location.search);
-const courseName = params.get("course") || "Coding Fundamentals";
-document.getElementById("courseTitle").innerText = courseName;
 
-const courseKey = "progress_" + courseName.replace(/\s+/g, "_");
-
-let progress = JSON.parse(localStorage.getItem(courseKey)) || {
-  completedModules: [],
-  quizScores: {}
-};
-
-/* =========================
-   VIDEO LIBRARY
-   Replace video IDs here only.
-========================= */
-
+/* VIDEO LIBRARY */
 const courseVideos = {
-  "Coding Fundamentals": ["I2wURDqiXdM", "rfscVS0vtbw", "f4KOjWS_KZs", "6iF8Xb7Z3wQ", "8ext9G7xspg"],
-  "Robotics & Electronics": ["I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM"],
-  "AI & Digital Creativity": ["I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM"],
-  "Quantum Computing Foundations": ["I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM"],
-  "IoT & Embedded Systems": ["I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM"],
-  "Fundamentals of Telecommunications": ["I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM"],
-  "AI for Professionals": ["I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM"],
-  "Cloud & Digital Infrastructure": ["I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM"],
-  "Technology Project Management": ["I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM", "I2wURDqiXdM"]
+  "Coding Fundamentals": ["I2wURDqiXdM","rfscVS0vtbw","f4KOjWS_KZs","6iF8Xb7Z3wQ","8ext9G7xspg"]
 };
 
-/* =========================
-   COURSE FOLDERS
-========================= */
-
-const courseFolders = {
-  "Coding Fundamentals": "coding-fundamentals",
-  "Robotics & Electronics": "robotics-electronics",
-  "AI & Digital Creativity": "ai-digital-creativity",
-  "Quantum Computing Foundations": "quantum-computing-foundations",
-  "IoT & Embedded Systems": "iot-embedded-systems",
-  "Fundamentals of Telecommunications": "telecommunications-fundamentals",
-  "AI for Professionals": "ai-for-professionals",
-  "Cloud & Digital Infrastructure": "cloud-digital-infrastructure",
-  "Technology Project Management": "technology-project-management"
-};
-
-/* =========================
-   COURSE MODULES
-========================= */
-
+/* COURSE CONTENT */
 const courseContent = {
   "Coding Fundamentals": [
-    ["Introduction to Programming", "Learn what programming is, why it matters, and how computers follow instructions."],
-    ["Variables and Data Types", "Learn how to store and manage information using variables and data types."],
-    ["If Statements", "Learn how programs make decisions using conditions and logic."],
-    ["Loops", "Learn how to repeat actions efficiently using loops."],
-    ["Mini Project", "Build your first simple program using the skills learned in this course."]
-  ],
-
-  "Robotics & Electronics": [
-    ["Introduction to Robotics", "Explore what robots are and how they sense, think, and act."],
-    ["Basic Electronics", "Learn about circuits, power, voltage, current, and basic components."],
-    ["Sensors and Inputs", "Understand how robots collect information from the environment."],
-    ["Motors and Outputs", "Learn how robots move and respond using motors and actuators."],
-    ["Robotics Mini Project", "Design a simple robot concept using sensors, motors, and control logic."]
-  ],
-
-  "AI & Digital Creativity": [
-    ["What Is Artificial Intelligence?", "Understand AI, machine learning, and how intelligent systems are used today."],
-    ["Prompt Engineering Basics", "Learn how to write clear prompts to get better results from AI tools."],
-    ["Creative AI Tools", "Explore how AI can help generate text, images, ideas, and learning resources."],
-    ["Responsible AI Use", "Learn about accuracy, bias, ethics, and responsible use of AI."],
-    ["AI Creative Project", "Create a digital project using AI tools and explain your process."]
-  ],
-
-  "Quantum Computing Foundations": [
-    ["Introduction to Quantum Computing", "Learn why quantum computing is different from classical computing."],
-    ["Qubits and Superposition", "Understand qubits, states, and the idea of superposition."],
-    ["Quantum Gates and Circuits", "Explore how quantum gates modify qubits in a quantum circuit."],
-    ["Quantum Applications", "Learn where quantum computing may impact science, security, and optimization."],
-    ["Quantum Mini Project", "Create or simulate a simple quantum circuit and explain the results."]
-  ],
-
-  "IoT & Embedded Systems": [
-    ["Introduction to IoT", "Learn how devices connect, collect data, and communicate over networks."],
-    ["Microcontrollers and Sensors", "Understand microcontrollers, sensors, and embedded systems."],
-    ["Communication Protocols", "Explore WiFi, Bluetooth, MQTT, and how devices exchange data."],
-    ["Cloud Dashboards", "Learn how IoT data can be sent to dashboards and cloud platforms."],
-    ["IoT System Project", "Design a smart device solution using sensors, connectivity, and data."]
-  ],
-
-  "Fundamentals of Telecommunications": [
-    ["Introduction to Telecommunications", "Understand communication systems and how information travels."],
-    ["Signals and Transmission", "Learn about analog, digital, wired, and wireless transmission."],
-    ["Networking Basics", "Explore IP addresses, routers, switches, and basic internet structure."],
-    ["Wireless and Mobile Systems", "Learn about WiFi, cellular networks, 4G, 5G, and future networks."],
-    ["Telecommunications Project", "Design a basic communication system and explain its components."]
-  ],
-
-  "AI for Professionals": [
-    ["AI in the Workplace", "Learn how AI tools are changing productivity, communication, and workflows."],
-    ["Prompting for Productivity", "Create prompts for emails, summaries, planning, and analysis."],
-    ["AI Automation Basics", "Understand how AI can support repetitive tasks and business processes."],
-    ["AI Ethics and Accuracy", "Learn how to evaluate AI outputs and use AI responsibly."],
-    ["Professional AI Project", "Design an AI workflow that solves a real professional problem."]
-  ],
-
-  "Cloud & Digital Infrastructure": [
-    ["Introduction to Cloud Computing", "Understand cloud services and why organizations use the cloud."],
-    ["Cloud Service Models", "Learn the basics of IaaS, PaaS, SaaS, and cloud deployment."],
-    ["Storage, Databases, and Security", "Explore cloud storage, databases, access control, and security basics."],
-    ["Deploying Applications", "Learn how websites and applications are hosted online."],
-    ["Cloud Infrastructure Project", "Design a basic cloud solution for a real-world use case."]
-  ],
-
-  "Technology Project Management": [
-    ["Introduction to Tech Project Management", "Learn how technology projects are planned, organized, and delivered."],
-    ["Agile and Scrum Basics", "Understand sprints, roles, backlogs, and iterative development."],
-    ["Planning and Communication", "Learn how to define goals, timelines, stakeholders, and risks."],
-    ["Managing Technical Teams", "Explore leadership, collaboration, and decision-making in tech teams."],
-    ["Final Project Plan", "Create a technology project plan with scope, timeline, tasks, and deliverables."]
+    ["Intro to Programming","Understand programming basics"],
+    ["Variables","Learn variables"],
+    ["If Statements","Decision making"],
+    ["Loops","Repetition"],
+    ["Project","Build program"]
   ]
 };
 
-/* =========================
-   5-QUESTION QUIZ GENERATOR
-========================= */
+const courseName = "Coding Fundamentals";
+const videos = courseVideos[courseName];
+const modules = courseContent[courseName];
 
-function createQuiz(moduleTitle, courseName) {
+let progress = JSON.parse(localStorage.getItem("progress")) || {
+  completed: [],
+  scores: {}
+};
+
+function createQuiz(title){
   return [
-    {
-      question: "What is the main focus of this module?",
-      options: [moduleTitle, "Billing only", "Skipping the course", "Changing colors"],
-      answer: moduleTitle
-    },
-    {
-      question: "Why is the full lesson PDF important?",
-      options: ["It provides detailed explanation", "It replaces practice", "It removes the quiz", "It is only decoration"],
-      answer: "It provides detailed explanation"
-    },
-    {
-      question: "What is the purpose of the quick summary PDF?",
-      options: ["To review key ideas quickly", "To avoid learning", "To replace the course", "To delete progress"],
-      answer: "To review key ideas quickly"
-    },
-    {
-      question: "Why should students complete the practice lab?",
-      options: ["To apply what they learned", "To skip the lesson", "To avoid the module", "To change the website"],
-      answer: "To apply what they learned"
-    },
-    {
-      question: "What should students do before marking the module complete?",
-      options: ["Complete the lesson materials, practice, and quiz", "Only open the menu", "Only log in", "Ignore the quiz"],
-      answer: "Complete the lesson materials, practice, and quiz"
-    }
+    {q:"Main focus?",a:title,o:[title,"Wrong","Wrong2","Wrong3"]},
+    {q:"Why learn?",a:"Apply knowledge",o:["Apply knowledge","Skip","Ignore","None"]},
+    {q:"Step 1?",a:"Read PDF",o:["Read PDF","Skip","Ignore","None"]},
+    {q:"Step 4?",a:"Practice",o:["Practice","Skip","Ignore","None"]},
+    {q:"Finish?",a:"Take quiz",o:["Take quiz","Ignore","Skip","None"]}
   ];
 }
 
-const selectedCourseModules = courseContent[courseName] || courseContent["Coding Fundamentals"];
-const courseFolder = courseFolders[courseName] || "coding-fundamentals";
-const videos = courseVideos[courseName] || courseVideos["Coding Fundamentals"];
-
-const courseModules = selectedCourseModules.map((item, index) => {
-  const moduleNumber = index + 1;
-
-  return {
-    title: "Module " + moduleNumber + ": " + item[0],
-    lesson: item[1],
-    videoId: videos[index],
-    folder: "../content/" + courseFolder + "/module" + moduleNumber + "/",
-    colab: "https://colab.research.google.com/#create=true",
-    sampleCode:
-`# ${courseName} - Module ${moduleNumber}
-print("Welcome to ${courseName}")
-print("This is Module ${moduleNumber}: ${item[0]}")`,
-    quiz: createQuiz(item[0], courseName)
-  };
-});
-
-/* =========================
-   RENDER MODULES
-========================= */
-
-function renderModules() {
+function render(){
   const container = document.getElementById("modulesContainer");
   container.innerHTML = "";
 
-  courseModules.forEach((module, index) => {
-    const moduleNumber = index + 1;
-    const isCompleted = progress.completedModules.includes(moduleNumber);
-    const score = progress.quizScores[moduleNumber];
+  modules.forEach((m,i)=>{
+    const quiz = createQuiz(m[0]);
 
     let quizHTML = "";
 
-    module.quiz.forEach((q, qIndex) => {
+    quiz.forEach((q,qi)=>{
       quizHTML += `
-        <div class="quiz-question">
-          <p><strong>Question ${qIndex + 1}:</strong> ${q.question}</p>
-          ${q.options.map(option => `
-            <label class="quiz-option">
-              <input type="radio" name="module${moduleNumber}_q${qIndex}" value="${option}">
-              ${option}
-            </label>
-          `).join("")}
-        </div>
-      `;
+      <div class="quiz-question">
+        <p>${q.q}</p>
+        ${q.o.map(o=>`
+          <label class="quiz-option">
+            <input type="radio" name="m${i}_q${qi}" value="${o}">${o}
+          </label>`).join("")}
+      </div>`;
     });
 
     container.innerHTML += `
-      <div class="card module-card">
-        <div class="module-badge">Module ${moduleNumber}</div>
+    <div class="card module-card">
 
-        <h3>${module.title}</h3>
+      <h3>Module ${i+1}: ${m[0]}</h3>
+      <p>${m[1]}</p>
 
-        <h4>Lesson Overview</h4>
-        <p>${module.lesson}</p>
+      <a href="../content/coding-fundamentals/module${i+1}/lesson.pdf" class="material-button" target="_blank">📘 Lesson</a>
+      <a href="../content/coding-fundamentals/module${i+1}/summary.pdf" class="material-button" target="_blank">🧾 Summary</a>
 
-        <h4>Step 1: Full Lesson</h4>
-        <a class="material-button" href="${module.folder}lesson.pdf" target="_blank">📘 Open Full Lesson PDF</a>
+      <iframe width="100%" height="250" src="https://www.youtube.com/embed/${videos[i]}"></iframe>
 
-        <h4>Step 2: Quick Review</h4>
-        <a class="material-button" href="${module.folder}summary.pdf" target="_blank">🧾 Open 1-Page Summary PDF</a>
+      <a href="https://colab.research.google.com" class="material-button" target="_blank">💻 Practice</a>
 
-        <h4>Step 3: Video Lesson</h4>
-        <div class="video-box">
-          <iframe
-            width="100%"
-            height="260"
-            src="https://www.youtube.com/embed/${module.videoId}"
-            title="${module.title}"
-            frameborder="0"
-            allowfullscreen>
-          </iframe>
-        </div>
+      <button onclick="toggleQuiz(${i})">📝 Start Quiz</button>
 
-        <h4>Step 4: Practice Lab</h4>
-        <p>Use Google Colab to complete the practice activity for this module.</p>
-        <a class="material-button" href="${module.colab}" target="_blank">💻 Open Google Colab Lab</a>
-
-        <h4>Sample Starter Code</h4>
-        <pre>${module.sampleCode}</pre>
-
-        <h4>Step 5: Quiz</h4>
-        <p>This quiz has 5 multiple-choice questions. Minimum passing score: 70%.</p>
+      <div id="quiz${i}" style="display:none;">
         ${quizHTML}
-
-        <button onclick="gradeQuiz(${moduleNumber})">Submit Quiz</button>
-        <button onclick="markComplete(${moduleNumber})">Mark Module Complete</button>
-
-        <p id="score${moduleNumber}">
-          ${score !== undefined ? "Quiz Score: " + score + "%" : "Quiz Score: Not submitted yet"}
-        </p>
-
-        <p>Status: <strong>${isCompleted ? "Completed ✅" : "Not Completed"}</strong></p>
+        <button onclick="grade(${i})">Submit Quiz</button>
+        <p id="score${i}"></p>
       </div>
-    `;
-  });
 
-  updateProgress();
+    </div>`;
+  });
 }
 
-/* =========================
-   QUIZ + PROGRESS
-========================= */
+function toggleQuiz(i){
+  const el = document.getElementById("quiz"+i);
+  el.style.display = el.style.display === "none" ? "block" : "none";
+}
 
-function gradeQuiz(moduleNumber) {
-  const module = courseModules[moduleNumber - 1];
+function grade(i){
   let correct = 0;
+  const quiz = createQuiz(modules[i][0]);
 
-  module.quiz.forEach((q, qIndex) => {
-    const selected = document.querySelector(`input[name="module${moduleNumber}_q${qIndex}"]:checked`);
-
-    if (selected && selected.value === q.answer) {
-      correct++;
-    }
+  quiz.forEach((q,qi)=>{
+    const sel = document.querySelector(`input[name="m${i}_q${qi}"]:checked`);
+    if(sel && sel.value===q.a) correct++;
   });
 
-  const score = Math.round((correct / module.quiz.length) * 100);
-  progress.quizScores[moduleNumber] = score;
+  const score = Math.round(correct/5*100);
+  document.getElementById("score"+i).innerText = "Score: "+score+"%";
 
-  localStorage.setItem(courseKey, JSON.stringify(progress));
-  document.getElementById("score" + moduleNumber).innerText = "Quiz Score: " + score + "%";
-
-  if (score >= 70) {
-    alert("Great job! You passed this quiz with " + score + "%.");
-  } else {
-    alert("You scored " + score + "%. Please review the lesson and try again.");
-  }
-
-  updateProgress();
-}
-
-function markComplete(moduleNumber) {
-  const score = progress.quizScores[moduleNumber];
-
-  if (score === undefined) {
-    alert("Please submit the quiz before marking this module complete.");
-    return;
-  }
-
-  if (score < 70) {
-    alert("You need at least 70% to complete this module.");
-    return;
-  }
-
-  if (!progress.completedModules.includes(moduleNumber)) {
-    progress.completedModules.push(moduleNumber);
-  }
-
-  localStorage.setItem(courseKey, JSON.stringify(progress));
-  renderModules();
-}
-
-function updateProgress() {
-  const completed = progress.completedModules.length;
-  const total = courseModules.length;
-  const percent = Math.round((completed / total) * 100);
-
-  document.getElementById("progressTitle").innerText = "Course Progress: " + percent + "%";
-  document.getElementById("progressFill").style.width = percent + "%";
-
-  if (percent === 0) {
-    document.getElementById("progressMessage").innerText = "Start Module 1 to begin your learning journey.";
-  } else if (percent < 100) {
-    document.getElementById("progressMessage").innerText = completed + " of " + total + " modules completed.";
-  } else {
-    document.getElementById("progressMessage").innerText = "Congratulations! You completed this course.";
+  if(score>=70){
+    alert("Passed!");
+  }else{
+    alert("Try again");
   }
 }
 
-renderModules();
+render();
+
 </script>
 
 </body>
