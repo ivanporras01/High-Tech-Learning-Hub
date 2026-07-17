@@ -6,7 +6,7 @@ College & university quantum computing LMS — **visual-first** curriculum with 
 
 ## What This Is
 
-- **Higher education** — community college, university, continuing ed (not K-12, no buddies, no gamified missions)
+- **Higher education** — community college, university, continuing ed
 - **Graphic-first** — Three.js Bloch sphere, gate playground, SVG circuits, probability charts in lessons
 - **Workforce-ready** — 12 modules, 20 Qiskit labs, career paths, employer profiles
 

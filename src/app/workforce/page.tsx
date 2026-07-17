@@ -19,7 +19,7 @@ export default function WorkforcePage() {
         <p className="mt-4 max-w-3xl text-[var(--qwa-fg-muted)]">
           Role families, compensation bands, and certification paths for college and university graduates
           entering the quantum economy. Data reflects industry workforce reports and pilot employer
-          interviews — not K-12 career exploration.
+          interviews and portfolio-ready quantum projects.
         </p>
       </header>
 

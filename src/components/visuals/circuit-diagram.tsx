@@ -12,7 +12,7 @@ const GATE_COLORS: Record<string, string> = {
   Rx: "#818cf8",
   Ry: "#22d3ee",
   Rz: "#e879f9",
-  CNOT: "#94a3b8",
+  I: "#64748b",
   M: "#64748b",
 };
 

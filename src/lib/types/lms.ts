@@ -83,7 +83,7 @@ export interface Course {
   description: string;
   /** Academic difficulty band within the college/university track */
   level: Difficulty;
-  /** Target learner population — QWA is college & university only (not K-12) */
+  /** Target learner population — college & university track */
   audience: CourseAudience;
   prerequisites: string[];
   totalHours: number;

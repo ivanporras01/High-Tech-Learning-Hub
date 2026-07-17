@@ -126,3 +126,118 @@ export function stateLabel(state: StateVector): string {
   if (magnitude(α) < 1e-6) return "|1⟩";
   return `${formatAmplitude(α)}|0⟩ + ${formatAmplitude(β)}|1⟩`;
 }
+
+export function formatComplex(v: Complex, precision = 4): string {
+  const re = v.re;
+  const im = v.im;
+  if (Math.abs(im) < 1e-8) return re.toFixed(precision);
+  if (Math.abs(re) < 1e-8) return im >= 0 ? `${im.toFixed(precision)}i` : `${im.toFixed(precision)}i`;
+  const sign = im >= 0 ? "+" : "-";
+  return `${re.toFixed(precision)} ${sign} ${Math.abs(im).toFixed(precision)}i`;
+}
+
+export function gateDisplayLabel(id: GateId, angle = Math.PI / 2): string {
+  if (id === "Rx" || id === "Ry" || id === "Rz") {
+    const deg = ((angle * 180) / Math.PI).toFixed(0);
+    return `${id}(${deg}°)`;
+  }
+  return id;
+}
+
+export function vectorKet(state: StateVector): string {
+  const α = formatComplex(state[0]);
+  const β = formatComplex(state[1]);
+  return `[ ${α} ]\\n[ ${β} ]`;
+}
+
+export function vectorColumnTex(state: StateVector): string {
+  return `|ψ⟩ = ${formatComplex(state[0])}|0⟩ + ${formatComplex(state[1])}|1⟩`;
+}
+
+export function norm(state: StateVector): number {
+  return Math.sqrt(prob0(state) + prob1(state));
+}
+
+export type EvolutionStep = {
+  index: number;
+  gate: GateId | "initial" | "measure";
+  gateLabel: string;
+  matrix?: [Complex, Complex][];
+  stateBefore: StateVector;
+  stateAfter: StateVector;
+  bloch: BlochCoords;
+  p0: number;
+  p1: number;
+};
+
+export function computeEvolution(
+  gates: GateId[],
+  rotationAngle = Math.PI / 2
+): EvolutionStep[] {
+  const steps: EvolutionStep[] = [];
+  let s = KET0;
+  steps.push({
+    index: 0,
+    gate: "initial",
+    gateLabel: "|0⟩",
+    stateBefore: KET0,
+    stateAfter: KET0,
+    bloch: toBloch(KET0),
+    p0: 1,
+    p1: 0,
+  });
+
+  gates.forEach((g, i) => {
+    const angle = g === "Rx" || g === "Ry" || g === "Rz" ? rotationAngle : Math.PI / 2;
+    const before = s;
+    const m = gateMatrix(g, angle);
+    s = applyGate(before, g, angle);
+    steps.push({
+      index: i + 1,
+      gate: g,
+      gateLabel: gateDisplayLabel(g, angle),
+      matrix: m,
+      stateBefore: before,
+      stateAfter: s,
+      bloch: toBloch(s),
+      p0: prob0(s),
+      p1: prob1(s),
+    });
+  });
+
+  return steps;
+}
+
+/** Human-readable Bloch coordinate derivation from amplitudes */
+export function blochDerivation(state: StateVector): {
+  alpha: string;
+  beta: string;
+  xExpr: string;
+  yExpr: string;
+  zExpr: string;
+  x: number;
+  y: number;
+  z: number;
+  normCheck: string;
+} {
+  const α = state[0];
+  const β = state[1];
+  const αcβ = mul(conj(α), β);
+  const p0 = magnitude(α) ** 2;
+  const p1 = magnitude(β) ** 2;
+  return {
+    alpha: formatComplex(α),
+    beta: formatComplex(β),
+    xExpr: "2·Re(α*β)",
+    yExpr: "2·Im(α*β)",
+    zExpr: "|α|² − |β|²",
+    x: 2 * αcβ.re,
+    y: 2 * αcβ.im,
+    z: p0 - p1,
+    normCheck: `|α|² + |β|² = ${p0.toFixed(4)} + ${p1.toFixed(4)} = ${(p0 + p1).toFixed(4)}`,
+  };
+}
+
+export function formatMatrixCell(v: Complex): string {
+  return formatComplex(v, 3);
+}

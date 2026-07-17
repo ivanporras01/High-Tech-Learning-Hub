@@ -296,7 +296,7 @@ export const QUANTUM_WORKFORCE_COURSE: Course = {
   title: "Quantum Computing for Workforce Development",
   subtitle: "College & university curriculum — from qubit theory to industry-ready skills",
   description:
-    "An undergraduate- and graduate-level workforce program covering quantum foundations, linear algebra, algorithms, error mitigation, Qiskit software engineering, and career capstone planning. Built for community colleges, universities, and continuing-education scholars pursuing quantum software, applications, and cloud roles — not a K-12 STEM platform.",
+    "An undergraduate- and graduate-level workforce program covering quantum foundations, linear algebra, algorithms, error mitigation, Qiskit software engineering, and career capstone planning. Built for community colleges, universities, and continuing-education scholars pursuing quantum software, applications, and cloud roles.",
   level: "beginner",
   audience: "college-university",
   prerequisites: [

@@ -27,8 +27,8 @@ export function Footer() {
           <div>
             <p className="text-lg font-bold qwa-text-gradient">Quantum Workforce Academy</p>
             <p className="mt-3 text-sm text-[var(--qwa-fg-muted)]">
-              College &amp; university quantum workforce development. Rigorous curriculum for higher
-              ed — from qubit theory to industry careers. Not a K-12 platform.
+              College &amp; university quantum workforce development — rigorous curriculum from
+              qubit theory to industry careers.
             </p>
           </div>
           {Object.entries(FOOTER_LINKS).map(([section, links]) => (
