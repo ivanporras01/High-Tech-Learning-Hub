@@ -38,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning data-theme="dark">
-      <body className="flex min-h-full flex-col bg-[var(--qwa-bg)] text-[var(--qwa-fg)]">
+      <body className="flex min-h-full flex-col bg-transparent text-[var(--qwa-fg)]">
         <ThemeProvider>
           <ScholarProvider>
             <QuantumCosmosBackground />

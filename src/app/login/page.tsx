@@ -10,10 +10,10 @@ export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
-    const result = login(String(fd.get("email") ?? ""), String(fd.get("password") ?? ""));
+    const result = await login(String(fd.get("email") ?? ""), String(fd.get("password") ?? ""));
     if (!result.ok) {
       setError(result.error);
       return;

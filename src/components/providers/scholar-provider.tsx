@@ -15,8 +15,8 @@ type ScholarContextValue = {
   scholar: Scholar | null;
   progress: ScholarProgress;
   loading: boolean;
-  login: (email: string, password: string) => ReturnType<typeof loginScholar>;
-  register: (data: Parameters<typeof registerScholar>[0]) => ReturnType<typeof registerScholar>;
+  login: (email: string, password: string) => Promise<Awaited<ReturnType<typeof loginScholar>>>;
+  register: (data: Parameters<typeof registerScholar>[0]) => Promise<Awaited<ReturnType<typeof registerScholar>>>;
   logout: () => void;
   refresh: () => void;
 };
@@ -39,8 +39,8 @@ export function ScholarProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   }, [refresh]);
 
-  const login = (email: string, password: string) => {
-    const result = loginScholar(email, password);
+  const login = async (email: string, password: string) => {
+    const result = await loginScholar(email, password);
     if (result.ok) {
       setScholar(result.scholar);
       setProgress(getScholarProgress(result.scholar.id));
@@ -48,8 +48,8 @@ export function ScholarProvider({ children }: { children: ReactNode }) {
     return result;
   };
 
-  const register = (data: Parameters<typeof registerScholar>[0]) => {
-    const result = registerScholar(data);
+  const register = async (data: Parameters<typeof registerScholar>[0]) => {
+    const result = await registerScholar(data);
     if (result.ok) {
       setScholar(result.scholar);
       setProgress({ completedLessonIds: [] });

@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { BlochSphereBackground, QwaOrbitRings } from "./bloch-sphere-background";
+import { drawAmbientBloch } from "@/lib/cosmos/bloch-draw";
+import { QwaOrbitRings } from "./bloch-sphere-background";
 
-type StarTint = "white" | "cyan" | "violet";
+type StarTint = "white" | "cyan" | "violet" | "orange";
 
 type Star = {
   bx: number;
@@ -18,17 +19,19 @@ type Star = {
   prevPy: number;
 };
 
-const STAR_COUNT = 115;
+const STAR_COUNT = 140;
 const TINT_COLORS: Record<StarTint, [number, number, number]> = {
   white: [255, 255, 255],
-  cyan: [34, 211, 238],
+  cyan: [110, 231, 249],
   violet: [167, 139, 250],
+  orange: [255, 180, 100],
 };
 
 function pickTint(): StarTint {
   const r = Math.random();
-  if (r < 0.18) return "cyan";
-  if (r < 0.32) return "violet";
+  if (r < 0.16) return "cyan";
+  if (r < 0.28) return "violet";
+  if (r < 0.36) return "orange";
   return "white";
 }
 
@@ -71,7 +74,7 @@ export function QuantumCosmosBackground() {
         by: (Math.random() - 0.5) * 2,
         z: Math.random() * 0.95 + 0.05,
         radius: Math.random() * 2.4 + 0.5,
-        opacity: Math.random() * 0.29 + 0.23,
+        opacity: Math.random() * 0.35 + 0.35,
         twinkleSpeed: Math.random() * 0.025 + 0.01,
         twinklePhase: Math.random() * Math.PI * 2,
         tint: pickTint(),
@@ -155,6 +158,9 @@ export function QuantumCosmosBackground() {
         star.prevPy = py;
       }
 
+      // Bloch sphere — same canvas, always visible
+      drawAmbientBloch(ctx!, w, h, time);
+
       animationId = requestAnimationFrame(draw);
     }
 
@@ -206,10 +212,9 @@ export function QuantumCosmosBackground() {
         <div className="qwa-nebula qwa-nebula--amber qwa-nebula-drift" />
       </div>
       <QwaOrbitRings />
-      <BlochSphereBackground />
       <canvas ref={canvasRef} className="qwa-cosmos-canvas" />
-      <div className="qwa-cosmos-vignette" />
       <div className="qwa-cosmos-aurora" />
+      <div className="qwa-cosmos-vignette" />
     </div>
   );
 }

@@ -16,7 +16,7 @@ export default function RegisterPage() {
     setPending(true);
     setError("");
     const fd = new FormData(e.currentTarget);
-    const result = register({
+    const result = await register({
       fullName: String(fd.get("fullName") ?? ""),
       email: String(fd.get("email") ?? ""),
       password: String(fd.get("password") ?? ""),

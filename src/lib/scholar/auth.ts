@@ -1,101 +1,136 @@
-/** Client-side scholar registration & session (localStorage MVP) */
+import type { Scholar, ScholarAccount, ScholarProgress, ScholarSession } from "./types";
+import { SCHOLARS_STORAGE_KEY, SESSION_STORAGE_KEY } from "./storage-keys";
 
-export type Scholar = {
-  id: string;
-  fullName: string;
-  email: string;
-  institution?: string;
-  registeredAt: string;
-};
-
-export type ScholarProgress = {
-  completedLessonIds: string[];
-  certificateIssuedAt?: string;
-  certificateId?: string;
-};
-
-const SCHOLARS_KEY = "qwa-scholars";
-const SESSION_KEY = "qwa-session";
-const PROGRESS_PREFIX = "qwa-progress-";
+export type { Scholar, ScholarProgress, ScholarAccount, ScholarSession };
 
 export const MODULE1_LESSON_IDS = ["m1-l1", "m1-l2", "m1-l3", "m1-l3b", "m1-l4", "m1-l5", "m1-l6"];
 
-function readScholars(): Record<string, Scholar & { passwordHash: string }> {
-  if (typeof window === "undefined") return {};
+const PROGRESS_PREFIX = "qwa-progress-";
+
+function isBrowser(): boolean {
+  return typeof window !== "undefined";
+}
+
+async function hashPassword(password: string): Promise<string> {
+  const data = new TextEncoder().encode(password);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+function readScholars(): ScholarAccount[] {
+  if (!isBrowser()) return [];
   try {
-    return JSON.parse(localStorage.getItem(SCHOLARS_KEY) ?? "{}");
+    const raw = localStorage.getItem(SCHOLARS_STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as ScholarAccount[]) : [];
   } catch {
-    return {};
+    return [];
   }
 }
 
-function writeScholars(data: Record<string, Scholar & { passwordHash: string }>) {
-  localStorage.setItem(SCHOLARS_KEY, JSON.stringify(data));
+function writeScholars(scholars: ScholarAccount[]): void {
+  if (!isBrowser()) return;
+  localStorage.setItem(SCHOLARS_STORAGE_KEY, JSON.stringify(scholars));
 }
 
-function simpleHash(input: string): string {
-  let h = 0;
-  for (let i = 0; i < input.length; i++) h = (Math.imul(31, h) + input.charCodeAt(i)) | 0;
-  return `h${Math.abs(h)}`;
+function accountToScholar(account: ScholarAccount): Scholar {
+  return {
+    id: account.id,
+    fullName: account.fullName,
+    email: account.email,
+    institution: account.institution,
+    registeredAt: account.createdAt,
+  };
 }
 
-export function registerScholar(data: {
+export async function registerScholar(input: {
   fullName: string;
   email: string;
   password: string;
   institution?: string;
-}): { ok: true; scholar: Scholar } | { ok: false; error: string } {
-  const email = data.email.trim().toLowerCase();
-  if (!email || !data.fullName.trim() || data.password.length < 6) {
-    return { ok: false, error: "Name, valid email, and password (6+ chars) required." };
-  }
-  const scholars = readScholars();
-  if (scholars[email]) return { ok: false, error: "An account with this email already exists." };
+}): Promise<{ ok: true; scholar: Scholar } | { ok: false; error: string }> {
+  const fullName = input.fullName.trim();
+  const email = input.email.trim().toLowerCase();
+  const password = input.password;
 
-  const scholar: Scholar = {
-    id: `sch-${Date.now().toString(36)}`,
-    fullName: data.fullName.trim(),
+  if (!fullName || !email || !password) {
+    return { ok: false, error: "Name, email, and password are required." };
+  }
+  if (password.length < 6) {
+    return { ok: false, error: "Password must be at least 6 characters." };
+  }
+
+  const scholars = readScholars();
+  if (scholars.some((s) => s.email === email)) {
+    return { ok: false, error: "An account with this email already exists." };
+  }
+
+  const account: ScholarAccount = {
+    id: crypto.randomUUID(),
+    fullName,
     email,
-    institution: data.institution?.trim(),
-    registeredAt: new Date().toISOString(),
+    passwordHash: await hashPassword(password),
+    institution: input.institution?.trim() || undefined,
+    createdAt: new Date().toISOString(),
   };
-  scholars[email] = { ...scholar, passwordHash: simpleHash(data.password) };
+
+  scholars.push(account);
   writeScholars(scholars);
-  localStorage.setItem(SESSION_KEY, email);
-  return { ok: true, scholar };
+
+  const session: ScholarSession = {
+    scholarId: account.id,
+    email: account.email,
+    fullName: account.fullName,
+  };
+  localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+  return { ok: true, scholar: accountToScholar(account) };
 }
 
-export function loginScholar(
+export async function loginScholar(
   email: string,
   password: string
-): { ok: true; scholar: Scholar } | { ok: false; error: string } {
-  const key = email.trim().toLowerCase();
-  const scholars = readScholars();
-  const record = scholars[key];
-  if (!record || record.passwordHash !== simpleHash(password)) {
+): Promise<{ ok: true; scholar: Scholar } | { ok: false; error: string }> {
+  const normalizedEmail = email.trim().toLowerCase();
+  const account = readScholars().find((s) => s.email === normalizedEmail);
+
+  if (!account) {
     return { ok: false, error: "Invalid email or password." };
   }
-  const { passwordHash: _, ...scholar } = record;
-  localStorage.setItem(SESSION_KEY, key);
-  return { ok: true, scholar };
+
+  if (account.passwordHash !== (await hashPassword(password))) {
+    return { ok: false, error: "Invalid email or password." };
+  }
+
+  const session: ScholarSession = {
+    scholarId: account.id,
+    email: account.email,
+    fullName: account.fullName,
+  };
+  localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+  return { ok: true, scholar: accountToScholar(account) };
 }
 
-export function logoutScholar() {
-  localStorage.removeItem(SESSION_KEY);
+export function logoutScholar(): void {
+  if (!isBrowser()) return;
+  localStorage.removeItem(SESSION_STORAGE_KEY);
 }
 
 export function getSessionScholar(): Scholar | null {
-  if (typeof window === "undefined") return null;
-  const email = localStorage.getItem(SESSION_KEY);
-  if (!email) return null;
-  const record = readScholars()[email];
-  if (!record) return null;
-  const { passwordHash: _, ...scholar } = record;
-  return scholar;
+  if (!isBrowser()) return null;
+  try {
+    const raw = localStorage.getItem(SESSION_STORAGE_KEY);
+    if (!raw) return null;
+    const session = JSON.parse(raw) as ScholarSession;
+    const account = readScholars().find((s) => s.id === session.scholarId);
+    return account ? accountToScholar(account) : null;
+  } catch {
+    return null;
+  }
 }
 
 export function getScholarProgress(scholarId: string): ScholarProgress {
-  if (typeof window === "undefined") return { completedLessonIds: [] };
+  if (!isBrowser()) return { completedLessonIds: [] };
   try {
     return JSON.parse(localStorage.getItem(`${PROGRESS_PREFIX}${scholarId}`) ?? '{"completedLessonIds":[]}');
   } catch {
@@ -103,7 +138,7 @@ export function getScholarProgress(scholarId: string): ScholarProgress {
   }
 }
 
-export function saveScholarProgress(scholarId: string, progress: ScholarProgress) {
+function saveScholarProgress(scholarId: string, progress: ScholarProgress): void {
   localStorage.setItem(`${PROGRESS_PREFIX}${scholarId}`, JSON.stringify(progress));
 }
 

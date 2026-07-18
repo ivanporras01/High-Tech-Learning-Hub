@@ -50,7 +50,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
-      <div className="min-h-screen bg-[var(--qwa-bg)]" suppressHydrationWarning={!mounted}>
+      <div className="relative min-h-screen bg-transparent" suppressHydrationWarning={!mounted}>
         {children}
       </div>
     </ThemeContext.Provider>
