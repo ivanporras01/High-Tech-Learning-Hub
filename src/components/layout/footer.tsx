@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { QwaLogo } from "@/components/ui/qwa-logo";
 
 const FOOTER_LINKS = {
   Learn: [
@@ -25,7 +26,10 @@ export function Footer() {
       <div className="qwa-container-wide py-12">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="text-lg font-bold qwa-text-gradient">Quantum Workforce Academy</p>
+            <div className="flex items-center gap-3">
+              <QwaLogo size={40} variant="full" className="drop-shadow-[0_0_14px_rgba(167,139,250,0.3)]" />
+              <p className="text-lg font-bold qwa-text-gradient">Quantum Workforce Academy</p>
+            </div>
             <p className="mt-3 text-sm text-[var(--qwa-fg-muted)]">
               College &amp; university quantum workforce development — rigorous curriculum from
               qubit theory to industry careers.

@@ -8,6 +8,12 @@ const SIMULATIONS = [
     status: "Live",
   },
   {
+    href: "/simulations/optical-circuits",
+    title: "Optical Circuit Simulator",
+    description: "Mach–Zehnder interferometer, dual-rail qubits, beam splitters — photonic quantum computing.",
+    status: "Live",
+  },
+  {
     href: "/course/foundations-of-quantum-computing/what-is-quantum-computing",
     title: "Lesson-embedded visuals",
     description: "Gate demos and circuit diagrams inside Module 1 lessons.",

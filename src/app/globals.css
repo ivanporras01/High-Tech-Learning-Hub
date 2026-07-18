@@ -158,6 +158,8 @@ body {
 /* ── Typography & badges ── */
 .qwa-text-gradient {
   @apply bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent;
+  background-size: 200% auto;
+  animation: qwa-gradient-flow 6s linear infinite;
 }
 
 .qwa-badge {
@@ -215,4 +217,176 @@ body {
 [data-theme="light"] .qwa-code-block {
   background: rgba(15, 23, 42, 0.06);
   color: #1e293b;
+}
+
+/* ── Quantum animations ── */
+.qwa-quantum-field-canvas {
+  @apply pointer-events-none absolute inset-0 h-full w-full;
+  opacity: 0.45;
+}
+
+.qwa-cosmos-grid {
+  @apply pointer-events-none absolute inset-0 opacity-[0.04];
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.5) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: qwa-grid-drift 60s linear infinite;
+}
+
+@keyframes qwa-grid-drift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(48px, 48px); }
+}
+
+.qwa-nebula-drift {
+  animation: qwa-nebula-drift 28s ease-in-out infinite alternate;
+}
+
+.qwa-nebula-drift-reverse {
+  animation: qwa-nebula-drift-reverse 34s ease-in-out infinite alternate;
+}
+
+.qwa-nebula-pulse {
+  animation: qwa-nebula-pulse 8s ease-in-out infinite;
+}
+
+@keyframes qwa-nebula-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(3%, 2%) scale(1.05); }
+}
+
+@keyframes qwa-nebula-drift-reverse {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-4%, -3%); }
+}
+
+@keyframes qwa-nebula-pulse {
+  0%, 100% { opacity: 0.12; transform: scale(1); }
+  50% { opacity: 0.22; transform: scale(1.08); }
+}
+
+.qwa-logo-pulse {
+  animation: qwa-logo-pulse 4s ease-in-out infinite;
+}
+
+@keyframes qwa-logo-pulse {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.35)); }
+  50% { filter: drop-shadow(0 0 16px rgba(167, 139, 250, 0.5)); }
+}
+
+.qwa-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.qwa-reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.qwa-hero-viz {
+  @apply relative mx-auto aspect-square w-full max-w-md;
+}
+
+.qwa-hero-ring--1 { animation: qwa-ring-pulse 6s ease-in-out infinite; }
+.qwa-hero-ring--2 { animation: qwa-ring-pulse 6s ease-in-out infinite 1s; }
+
+@keyframes qwa-ring-pulse {
+  0%, 100% { r: 160; opacity: 0.25; }
+  50% { opacity: 0.45; }
+}
+
+.qwa-hero-orbit--a { transform-origin: 200px 200px; animation: qwa-orbit-spin 20s linear infinite; }
+.qwa-hero-orbit--b { transform-origin: 200px 200px; animation: qwa-orbit-spin 14s linear infinite reverse; }
+
+@keyframes qwa-orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.qwa-hero-vector { transform-origin: 200px 200px; animation: qwa-vector-sweep 8s ease-in-out infinite; }
+.qwa-hero-vector-tip { animation: qwa-vector-sweep 8s ease-in-out infinite; }
+
+@keyframes qwa-vector-sweep {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.qwa-hero-chip {
+  @apply absolute rounded-full border px-3 py-1 text-xs font-medium backdrop-blur-sm;
+  border-color: var(--qwa-border);
+  background: var(--qwa-glass-bg);
+  color: var(--qwa-cyan);
+  animation: qwa-chip-float 5s ease-in-out infinite;
+}
+
+.qwa-hero-chip--1 { top: 8%; left: 0; animation-delay: 0s; }
+.qwa-hero-chip--2 { top: 45%; right: -4%; animation-delay: 1.2s; }
+.qwa-hero-chip--3 { bottom: 10%; left: 10%; animation-delay: 2.4s; }
+
+@keyframes qwa-chip-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.qwa-card-glow {
+  animation: qwa-card-glow 3s ease-in-out infinite;
+}
+
+@keyframes qwa-card-glow {
+  0%, 100% { box-shadow: 0 0 40px rgba(56, 189, 248, 0.06); }
+  50% { box-shadow: 0 0 48px rgba(167, 139, 250, 0.12); }
+}
+
+.qwa-progress-shimmer {
+  background-size: 200% 100%;
+  animation: qwa-shimmer 2.5s linear infinite;
+}
+
+@keyframes qwa-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes qwa-gradient-flow {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.qwa-certificate {
+  box-shadow: 0 0 60px rgba(34, 211, 238, 0.15);
+}
+
+@media print {
+  .qwa-cosmos-root,
+  .qwa-glass-nav,
+  footer,
+  .qwa-no-print {
+    display: none !important;
+  }
+  .qwa-certificate {
+    border: 2px solid #0891b2 !important;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qwa-nebula-drift,
+  .qwa-nebula-drift-reverse,
+  .qwa-nebula-pulse,
+  .qwa-logo-pulse,
+  .qwa-hero-orbit--a,
+  .qwa-hero-orbit--b,
+  .qwa-hero-chip,
+  .qwa-cosmos-grid,
+  .qwa-text-gradient,
+  .qwa-progress-shimmer {
+    animation: none !important;
+  }
+  .qwa-reveal {
+    opacity: 1;
+    transform: none;
+  }
 }

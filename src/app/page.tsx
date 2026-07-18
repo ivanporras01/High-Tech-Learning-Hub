@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { GatePlaygroundSection } from "@/components/home/gate-playground-section";
 import { HomeCareerCharts } from "@/components/home/home-career-charts";
+import { QwaLogo } from "@/components/ui/qwa-logo";
+import { QuantumHeroViz, QuantumReveal } from "@/components/ui/quantum-motion";
 import { getCourse, getTotalLessonCount } from "@/lib/data/course";
 import { getFeaturedLabs } from "@/lib/data/labs";
 import { getNewsArticles } from "@/lib/data/news";
@@ -19,8 +21,12 @@ export default function HomePage() {
       {/* Hero */}
       <section className="qwa-container py-16 sm:py-24" aria-labelledby="hero-heading">
         <div className="grid items-center gap-12 lg:grid-cols-2">
+          <QuantumReveal>
           <div>
-            <span className="qwa-badge">Workforce Development Platform</span>
+            <div className="flex items-center gap-3">
+              <QwaLogo size={52} variant="full" className="qwa-logo-pulse" />
+              <span className="qwa-badge">Workforce Development Platform</span>
+            </div>
             <h1 id="hero-heading" className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
               <span className="qwa-text-gradient">Quantum Computing</span>
               <br />
@@ -28,23 +34,23 @@ export default function HomePage() {
             </h1>
             <p className="mt-6 text-lg text-[var(--qwa-fg-muted)] sm:text-xl">
               Master qubits, Qiskit, hybrid algorithms, and career-ready skills through a premium LMS with
-              interactive Bloch sphere and gate simulations.
+              interactive Bloch sphere, optical circuits, and gate simulations.
             </p>
             <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row">
-              <Link href="/course" className="qwa-btn-primary">
-                Explore the Course
-              </Link>
-              <Link href="/labs" className="qwa-btn-secondary">
-                Start a Lab
-              </Link>
+              <Link href="/register" className="qwa-btn-primary">Register as Scholar</Link>
+              <Link href="/course" className="qwa-btn-secondary">Explore the Course</Link>
             </div>
           </div>
-          <div>
+          </QuantumReveal>
+          <QuantumReveal delay={150}>
+          <div className="relative">
+            <QuantumHeroViz className="mb-6 hidden lg:block" />
             <p className="mb-3 text-sm font-bold uppercase tracking-wider text-[var(--qwa-cyan)]">
               Try it now — Gate Playground
             </p>
             <GatePlaygroundSection title="H · X · Y · Z · Rx · Ry · Rz" initialGates={["H"]} />
           </div>
+          </QuantumReveal>
         </div>
       </section>
 

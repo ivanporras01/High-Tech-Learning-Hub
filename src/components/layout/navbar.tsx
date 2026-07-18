@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { QwaLogo } from "@/components/ui/qwa-logo";
+import { useScholar } from "@/components/providers/scholar-provider";
 
 const NAV_LINKS = [
   { href: "/course", label: "Course" },
@@ -17,19 +19,13 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const { scholar, logout } = useScholar();
 
   return (
     <header className="qwa-glass-nav sticky top-0 z-50">
-      <nav
-        className="qwa-container flex h-16 items-center justify-between gap-4"
-        aria-label="Main navigation"
-      >
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-lg font-bold tracking-tight"
-          aria-label="Quantum Workforce Academy home"
-        >
-          <span className="qwa-text-gradient" aria-hidden="true">◈</span>
+      <nav className="qwa-container flex h-16 items-center justify-between gap-4" aria-label="Main navigation">
+        <Link href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight" aria-label="Quantum Workforce Academy home">
+          <QwaLogo size={34} variant="icon" className="shrink-0 qwa-logo-pulse" />
           <span className="hidden sm:inline">Quantum Workforce Academy</span>
           <span className="sm:hidden">QWA</span>
         </Link>
@@ -57,23 +53,26 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link href="/course" className="qwa-btn-primary hidden text-sm sm:inline-flex">
-            Start Learning
-          </Link>
+          {scholar ? (
+            <>
+              <span className="hidden max-w-[120px] truncate text-xs text-[var(--qwa-fg-muted)] sm:inline">{scholar.fullName.split(" ")[0]}</span>
+              <button type="button" onClick={logout} className="qwa-btn-secondary hidden text-xs sm:inline-flex">Logout</button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="qwa-btn-secondary hidden text-xs sm:inline-flex">Login</Link>
+              <Link href="/register" className="hidden text-xs text-[var(--qwa-cyan)] hover:underline sm:inline">Register</Link>
+            </>
+          )}
+          <Link href="/course" className="qwa-btn-primary hidden text-sm sm:inline-flex">Start Learning</Link>
         </div>
       </nav>
 
-      {/* Mobile nav */}
       <div className="qwa-container pb-3 md:hidden">
         <ul className="flex gap-1 overflow-x-auto pb-1" role="list" aria-label="Mobile navigation">
           {NAV_LINKS.map(({ href, label }) => (
             <li key={href} className="shrink-0">
-              <Link
-                href={href}
-                className="qwa-badge whitespace-nowrap hover:opacity-80"
-              >
-                {label}
-              </Link>
+              <Link href={href} className="qwa-badge whitespace-nowrap hover:opacity-80">{label}</Link>
             </li>
           ))}
         </ul>

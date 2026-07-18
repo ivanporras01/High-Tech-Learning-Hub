@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLesson } from "@/lib/data/course";
 import { LessonContentView } from "@/components/course/lesson-content";
+import { LessonCompleteButton } from "@/components/course/lesson-complete-button";
 
 type Props = { params: Promise<{ moduleSlug: string; lessonSlug: string }> };
 
@@ -55,6 +56,8 @@ export default async function LessonPage({ params }: Props) {
             </Link>
           </div>
         )}
+
+        <LessonCompleteButton lessonId={lesson.id} lessonTitle={lesson.title} />
       </article>
     </div>
   );

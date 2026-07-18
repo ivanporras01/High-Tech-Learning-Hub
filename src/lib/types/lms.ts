@@ -29,7 +29,9 @@ export type LessonVisualType =
   | "gate-sequence-demo"
   | "circuit-diagram"
   | "probability-chart"
-  | "technology-landscape";
+  | "technology-landscape"
+  | "classical-quantum-comparison"
+  | "entanglement-concept";
 
 export interface LessonVisual {
   type: LessonVisualType;

@@ -1,5 +1,14 @@
-import type { Course, Lesson, Module } from "@/lib/types/lms";
+import type { Course, Lesson, LessonContent, Module } from "@/lib/types/lms";
 import { MODULE1_LESSON_CONTENT } from "./module1-lessons";
+import { MODULE2_LESSON_CONTENT } from "./module2-lessons";
+import { MODULE3_LESSON_CONTENT } from "./module3-lessons";
+import { MODULE4_LESSON_CONTENT } from "./module4-lessons";
+import { MODULE5_LESSON_CONTENT } from "./module5-lessons";
+
+/** Attach rich content to lesson stubs when available */
+function withContent(lessons: Lesson[], map: Record<string, LessonContent>): Lesson[] {
+  return lessons.map((l) => (map[l.slug] ? { ...l, content: map[l.slug] } : l));
+}
 
 /** Helper to create lesson stubs for modules 2–12 */
 function lesson(
@@ -20,13 +29,14 @@ const module1Lessons: Lesson[] = [
     id: "m1-l1",
     slug: "what-is-quantum-computing",
     title: "What Is Quantum Computing?",
-    description: "Define quantum computing, superposition, and workforce relevance.",
+    description: "Define the qubit, superposition, and how quantum programs differ from classical software.",
     objectives: [
-      "Explain superposition and measurement in plain language",
-      "Describe how quantum programs differ from classical software",
+      "Define a qubit as |ψ⟩ = α|0⟩ + β|1⟩ and explain amplitudes vs measurement",
+      "Contrast qubit behavior with a classical bit",
+      "Describe superposition, gates, and the Born rule",
       "Identify realistic vs overhyped quantum use cases",
     ],
-    durationMinutes: 25,
+    durationMinutes: 35,
     type: "reading",
     order: 1,
     content: MODULE1_LESSON_CONTENT["what-is-quantum-computing"],
@@ -34,14 +44,15 @@ const module1Lessons: Lesson[] = [
   {
     id: "m1-l2",
     slug: "classical-vs-quantum-information",
-    title: "Classical vs Quantum Information",
-    description: "Compare bits and qubits, no-cloning, and decoherence.",
+    title: "Classical vs Quantum Computing",
+    description: "Detailed comparison: bits vs qubits, advantages, disadvantages, and when to use each.",
     objectives: [
-      "Contrast classical and quantum information capacity",
-      "State the no-cloning theorem and its engineering impact",
-      "Explain why NISQ devices require statistical workflows",
+      "Compare classical bits and qubits on state, copying, and measurement",
+      "List advantages of quantum computing for specific problem classes",
+      "List disadvantages and NISQ limitations honestly",
+      "Apply a workforce framework for classical vs quantum tool choice",
     ],
-    durationMinutes: 30,
+    durationMinutes: 40,
     type: "reading",
     order: 2,
     content: MODULE1_LESSON_CONTENT["classical-vs-quantum-information"],
@@ -139,13 +150,16 @@ const modules: Module[] = [
     title: "Linear Algebra for Quantum Computing",
     description: "Vectors, matrices, eigenvalues, and Hilbert space intuition for developers.",
     order: 2,
-    lessons: [
+    lessons: withContent(
+      [
       lesson("m2-l1", "vectors-and-inner-products", "Vectors and Inner Products", "Complex vectors and ⟨ψ|φ⟩.", ["Compute inner products", "Normalize states"], 30, 1),
       lesson("m2-l2", "matrices-and-operators", "Matrices and Operators", "Linear operators as quantum gates.", ["Apply matrices to state vectors", "Identify unitary matrices"], 35, 2),
       lesson("m2-l3", "eigenvalues-and-eigenvectors", "Eigenvalues and Eigenvectors", "Measurement outcomes as eigenvalues.", ["Find eigenvalues of Pauli matrices", "Connect observables to measurement"], 40, 3),
       lesson("m2-l4", "tensor-products", "Tensor Products", "Multi-qubit state spaces.", ["Build |00⟩, |01⟩ basis", "Understand exponential dimension"], 35, 4),
       lesson("m2-l5", "linear-algebra-lab-prep", "Linear Algebra Lab Prep", "NumPy patterns for quantum states.", ["Use NumPy for statevectors", "Prepare for Lab 2"], 25, 5, "lab-ref"),
     ],
+      MODULE2_LESSON_CONTENT
+    ),
   },
   {
     id: "mod-3",
@@ -153,13 +167,16 @@ const modules: Module[] = [
     title: "Qubits and Quantum States",
     description: "Bloch sphere, density matrices, and pure vs mixed states.",
     order: 3,
-    lessons: [
+    lessons: withContent(
+      [
       lesson("m3-l1", "single-qubit-states", "Single-Qubit States", "Statevector representation.", ["Write |ψ⟩ in computational basis", "Compute measurement probabilities"], 30, 1),
       lesson("m3-l2", "bloch-sphere-visualization", "Bloch Sphere Visualization", "Geometric picture of qubits.", ["Map states to Bloch coordinates", "Use QWA Bloch simulation"], 25, 2, "interactive"),
       lesson("m3-l3", "density-matrices", "Density Matrices", "Mixed states and decoherence.", ["Construct density matrix ρ", "Compute purity Tr(ρ²)"], 35, 3),
       lesson("m3-l4", "partial-trace-and-purity", "Partial Trace and Purity", "Subsystem analysis.", ["Perform partial trace", "Detect entanglement via purity"], 30, 4),
       lesson("m3-l5", "state-tomography-intro", "State Tomography Introduction", "Reconstructing ρ from measurements.", ["Outline tomography protocol", "Connect to calibration careers"], 28, 5),
     ],
+      MODULE3_LESSON_CONTENT
+    ),
   },
   {
     id: "mod-4",
@@ -167,7 +184,8 @@ const modules: Module[] = [
     title: "Quantum Gates and Circuits",
     description: "Pauli, Hadamard, CNOT, and circuit composition in Qiskit.",
     order: 4,
-    lessons: [
+    lessons: withContent(
+      [
       lesson("m4-l1", "pauli-and-hadamard-gates", "Pauli and Hadamard Gates", "X, Y, Z, H on the Bloch sphere.", ["Apply H|0⟩", "Predict measurement statistics"], 30, 1),
       lesson("m4-l2", "phase-and-rotation-gates", "Phase and Rotation Gates", "Rz, Rx, Ry parameterization.", ["Compose rotation sequences", "Relate angles to Bloch motion"], 32, 2),
       lesson("m4-l3", "two-qubit-gates", "Two-Qubit Gates", "CNOT, CZ, and entangling gates.", ["Build Bell state circuit", "Read coupling maps"], 35, 3),
@@ -175,6 +193,8 @@ const modules: Module[] = [
       lesson("m4-l5", "transpilation-basics", "Transpilation Basics", "Mapping to hardware native gates.", ["Run transpiler on sample circuit", "Interpret optimization levels"], 30, 5),
       lesson("m4-l6", "circuit-design-workshop", "Circuit Design Workshop", "Design a swap test circuit.", ["Implement swap test", "Document shot histograms"], 40, 6, "lab-ref"),
     ],
+      MODULE4_LESSON_CONTENT
+    ),
   },
   {
     id: "mod-5",
@@ -182,13 +202,16 @@ const modules: Module[] = [
     title: "Entanglement and Bell States",
     description: "EPR pairs, Bell inequalities, and teleportation protocol.",
     order: 5,
-    lessons: [
+    lessons: withContent(
+      [
       lesson("m5-l1", "product-vs-entangled-states", "Product vs Entangled States", "Separability criteria.", ["Identify entangled statevectors", "Use Schmidt decomposition intro"], 30, 1),
       lesson("m5-l2", "bell-states-and-measurements", "Bell States and Measurements", "Four maximally entangled bases.", ["Prepare |Φ+⟩", "Analyze correlated outcomes"], 32, 2),
       lesson("m5-l3", "bell-inequality-overview", "Bell Inequality Overview", "Local realism vs quantum mechanics.", ["Explain CHSH setup", "Interpret violation significance"], 35, 3),
       lesson("m5-l4", "quantum-teleportation", "Quantum Teleportation", "Protocol steps and classical bits.", ["Trace qubit state transfer", "Count classical communication cost"], 38, 4),
       lesson("m5-l5", "entanglement-in-workforce", "Entanglement in Workforce Projects", "Networking, cryptography, and simulation.", ["Name industry use of entanglement", "Avoid sci-fi misconceptions"], 22, 5),
     ],
+      MODULE5_LESSON_CONTENT
+    ),
   },
   {
     id: "mod-6",

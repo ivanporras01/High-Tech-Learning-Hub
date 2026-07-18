@@ -24,6 +24,16 @@ const TechnologyLandscape = dynamic(
   { ssr: false, loading: () => <VisualSkeleton label="Loading technology landscape…" /> }
 );
 
+const ClassicalQuantumComparison = dynamic(
+  () => import("@/components/visuals/classical-quantum-comparison").then((m) => m.ClassicalQuantumComparison),
+  { ssr: false }
+);
+
+const EntanglementConceptCard = dynamic(
+  () => import("@/components/visuals/entanglement-concept-card").then((m) => m.EntanglementConceptCard),
+  { ssr: false }
+);
+
 function VisualSkeleton({ label }: { label: string }) {
   return (
     <div className="qwa-glass-card flex h-48 items-center justify-center text-sm text-[var(--qwa-fg-muted)]">
@@ -85,6 +95,17 @@ export function LessonVisualBlock({ visual }: LessonVisualBlockProps) {
           compact={(props?.compact as boolean) ?? false}
         />
       );
+      break;
+    case "classical-quantum-comparison":
+      content = (
+        <div>
+          {title && <h3 className="mb-3 font-semibold text-[var(--qwa-fg)]">{title}</h3>}
+          <ClassicalQuantumComparison />
+        </div>
+      );
+      break;
+    case "entanglement-concept":
+      content = <EntanglementConceptCard title={title} />;
       break;
     default:
       content = null;

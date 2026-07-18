@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { QuantumFieldCanvas } from "./quantum-field-canvas";
 
 type StarTint = "white" | "cyan" | "violet";
 
@@ -199,12 +200,14 @@ export function QuantumCosmosBackground() {
   return (
     <div ref={rootRef} className="qwa-cosmos-root" aria-hidden="true">
       <div className="qwa-cosmos-parallax">
-        <div className="qwa-nebula qwa-nebula--violet" />
-        <div className="qwa-nebula qwa-nebula--cyan" />
-        <div className="qwa-nebula qwa-nebula--magenta" />
+        <div className="qwa-nebula qwa-nebula--violet qwa-nebula-drift" />
+        <div className="qwa-nebula qwa-nebula--cyan qwa-nebula-drift-reverse" />
+        <div className="qwa-nebula qwa-nebula--magenta qwa-nebula-pulse" />
       </div>
+      <QuantumFieldCanvas />
       <canvas ref={canvasRef} className="qwa-cosmos-canvas" />
       <div className="qwa-cosmos-vignette" />
+      <div className="qwa-cosmos-grid" />
     </div>
   );
 }
