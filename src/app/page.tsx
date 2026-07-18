@@ -37,8 +37,8 @@ export default function HomePage() {
               interactive Bloch sphere, optical circuits, and gate simulations.
             </p>
             <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row">
-              <Link href="/register" className="qwa-btn-primary">Register as Scholar</Link>
-              <Link href="/course" className="qwa-btn-secondary">Explore the Course</Link>
+              <Link href="/concepts" className="qwa-btn-primary">Explore Quantum Concepts</Link>
+              <Link href="/register" className="qwa-btn-secondary">Register as Scholar</Link>
             </div>
           </div>
           </QuantumReveal>
@@ -51,6 +51,43 @@ export default function HomePage() {
             <GatePlaygroundSection title="H · X · Y · Z · Rx · Ry · Rz" initialGates={["H"]} />
           </div>
           </QuantumReveal>
+        </div>
+      </section>
+
+      {/* Quantum concepts hub */}
+      <section className="qwa-container py-16" aria-labelledby="concepts-heading">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 id="concepts-heading" className="qwa-section-title">
+              Core Quantum Concepts
+            </h2>
+            <p className="mt-3 max-w-2xl text-[var(--qwa-fg-muted)]">
+              Superposition, entanglement, teleportation, measurement, gates, and more — explained clearly before
+              you dive into the full 12-module curriculum.
+            </p>
+          </div>
+          <Link href="/concepts" className="text-sm text-[var(--qwa-cyan)] hover:underline">
+            Full concepts guide →
+          </Link>
+        </div>
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { href: "/concepts#superposition", label: "Superposition", desc: "α|0⟩ + β|1⟩ before measurement" },
+            { href: "/concepts#entanglement", label: "Entanglement", desc: "Non-separable multi-qubit states" },
+            { href: "/concepts#teleportation", label: "Teleportation", desc: "State transfer via Bell pairs" },
+            { href: "/concepts#measurement", label: "Measurement", desc: "Born rule and collapse" },
+            { href: "/concepts#gates", label: "Quantum Gates", desc: "H, Pauli, CNOT, rotations" },
+            { href: "/concepts#interference", label: "Interference", desc: "Amplitude cancellation & Grover" },
+          ].map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="qwa-glass-card block transition hover:border-[var(--qwa-cyan)]/40"
+            >
+              <h3 className="font-semibold text-[var(--qwa-fg)]">{item.label}</h3>
+              <p className="mt-1 text-sm text-[var(--qwa-fg-muted)]">{item.desc}</p>
+            </Link>
+          ))}
         </div>
       </section>
 

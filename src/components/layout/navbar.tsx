@@ -7,6 +7,7 @@ import { QwaLogo } from "@/components/ui/qwa-logo";
 import { useScholar } from "@/components/providers/scholar-provider";
 
 const NAV_LINKS = [
+  { href: "/concepts", label: "Concepts" },
   { href: "/course", label: "Course" },
   { href: "/technologies", label: "Tech" },
   { href: "/simulations", label: "Simulations" },

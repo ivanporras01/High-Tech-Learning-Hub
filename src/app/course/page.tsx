@@ -26,6 +26,12 @@ export default function CoursePage() {
         <p className="mt-4 text-sm text-[var(--qwa-fg-muted)]">
           {course.modules.length} modules · {lessonCount} lessons · 20 labs
         </p>
+        <Link
+          href="/concepts"
+          className="mt-6 inline-flex items-center gap-2 rounded-xl border border-[var(--qwa-cyan)]/30 bg-[var(--qwa-cyan)]/5 px-4 py-3 text-sm text-[var(--qwa-cyan)] hover:bg-[var(--qwa-cyan)]/10"
+        >
+          New to quantum? Start with the Concepts Guide — superposition, entanglement, teleportation, and more →
+        </Link>
       </header>
 
       <section className="mt-12" aria-labelledby="modules-heading">
