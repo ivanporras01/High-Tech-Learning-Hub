@@ -24,7 +24,7 @@ export default function HomePage() {
           <QuantumReveal>
           <div>
             <div className="flex items-center gap-3">
-              <QwaLogo size={52} variant="full" className="qwa-logo-pulse" />
+              <QwaLogo size={60} variant="full" className="qwa-logo-pulse" />
               <span className="qwa-badge">Workforce Development Platform</span>
             </div>
             <h1 id="hero-heading" className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">

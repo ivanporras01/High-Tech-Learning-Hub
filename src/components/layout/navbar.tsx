@@ -25,7 +25,7 @@ export function Navbar() {
     <header className="qwa-glass-nav sticky top-0 z-50">
       <nav className="qwa-container flex h-16 items-center justify-between gap-4" aria-label="Main navigation">
         <Link href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight" aria-label="Quantum Workforce Academy home">
-          <QwaLogo size={34} variant="icon" className="shrink-0 qwa-logo-pulse" />
+          <QwaLogo size={44} variant="icon" className="shrink-0 qwa-logo-pulse" />
           <span className="hidden sm:inline">Quantum Workforce Academy</span>
           <span className="sm:hidden">QWA</span>
         </Link>

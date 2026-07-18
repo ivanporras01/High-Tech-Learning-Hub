@@ -27,7 +27,7 @@ export function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="flex items-center gap-3">
-              <QwaLogo size={40} variant="full" className="drop-shadow-[0_0_14px_rgba(167,139,250,0.3)]" />
+              <QwaLogo size={48} variant="full" className="drop-shadow-[0_0_14px_rgba(167,139,250,0.3)]" />
               <p className="text-lg font-bold qwa-text-gradient">Quantum Workforce Academy</p>
             </div>
             <p className="mt-3 text-sm text-[var(--qwa-fg-muted)]">

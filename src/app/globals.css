@@ -61,70 +61,168 @@ body {
   @apply relative z-10;
 }
 
-/* ── Cosmos background ── */
+/* ── Cosmos background (NOVA-inspired + quantum Bloch layer) ── */
 .qwa-cosmos-root {
   @apply pointer-events-none fixed inset-0 z-0 overflow-hidden;
-  background: radial-gradient(ellipse 120% 80% at 50% 0%, #1e1b4b 0%, #030712 50%, #020617 100%);
+  background: radial-gradient(ellipse 120% 85% at 50% 0%, #0d1b3d 0%, #0a0e27 35%, #030712 55%, #010409 100%);
 }
 
 [data-theme="light"] .qwa-cosmos-root {
-  background: radial-gradient(ellipse 120% 80% at 50% 0%, #e0e7ff 0%, #f0f4ff 50%, #e2e8f0 100%);
+  background: radial-gradient(ellipse 120% 85% at 50% 0%, #c7d2fe 0%, #e0e7ff 40%, #f0f4ff 70%, #e2e8f0 100%);
 }
 
 .qwa-cosmos-canvas {
-  @apply absolute inset-0 h-full w-full opacity-[0.32];
+  @apply absolute inset-0 h-full w-full;
+  opacity: 0.38;
 }
 
 [data-theme="light"] .qwa-cosmos-canvas {
-  opacity: 0.18;
+  opacity: 0.22;
 }
 
 .qwa-cosmos-vignette {
   @apply absolute inset-0;
-  background: radial-gradient(ellipse at center, transparent 55%, rgba(2, 6, 23, 0.35) 100%);
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(1, 4, 9, 0.45) 100%);
 }
 
 [data-theme="light"] .qwa-cosmos-vignette {
-  background: radial-gradient(ellipse at center, transparent 60%, rgba(148, 163, 184, 0.15) 100%);
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(148, 163, 184, 0.2) 100%);
+}
+
+.qwa-cosmos-aurora {
+  @apply absolute inset-0 opacity-40;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 20%, rgba(34, 211, 238, 0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 35% at 80% 30%, rgba(167, 139, 250, 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 30% at 50% 80%, rgba(251, 146, 60, 0.04) 0%, transparent 70%);
 }
 
 .qwa-cosmos-parallax {
   @apply absolute inset-0;
   transform: translate(
-    calc(var(--qwa-parallax-x, 0px) * 8),
-    calc(var(--qwa-parallax-y, 0px) * 8)
+    calc(var(--qwa-parallax-x, 0px) * 10),
+    calc(var(--qwa-parallax-y, 0px) * 10)
   );
+  will-change: transform;
 }
 
 .qwa-nebula {
-  @apply absolute rounded-full blur-[72px];
-}
-
-.qwa-nebula--violet {
-  width: min(90vw, 720px);
-  height: min(90vw, 720px);
-  top: -10%;
-  left: -8%;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 68%);
-  opacity: 0.2;
+  @apply absolute rounded-full;
+  filter: blur(80px);
 }
 
 .qwa-nebula--cyan {
-  width: min(80vw, 560px);
-  height: min(80vw, 560px);
-  bottom: -8%;
-  right: -10%;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 68%);
-  opacity: 0.18;
+  width: min(100vw, 780px);
+  height: min(100vw, 780px);
+  top: -14%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(0, 180, 216, 0.14) 0%, rgba(0, 180, 216, 0.04) 35%, transparent 68%);
+  opacity: 0.28;
+}
+
+.qwa-nebula--violet {
+  width: min(90vw, 640px);
+  height: min(90vw, 640px);
+  top: 28%;
+  right: -18%;
+  background: radial-gradient(circle, rgba(118, 87, 232, 0.12) 0%, rgba(118, 87, 232, 0.03) 40%, transparent 68%);
+  opacity: 0.24;
 }
 
 .qwa-nebula--magenta {
-  width: min(70vw, 480px);
-  height: min(70vw, 480px);
-  top: 40%;
-  right: 20%;
-  background: radial-gradient(circle, rgba(232, 121, 249, 0.08) 0%, transparent 68%);
-  opacity: 0.15;
+  width: min(70vw, 520px);
+  height: min(70vw, 520px);
+  top: 55%;
+  left: 10%;
+  background: radial-gradient(circle, rgba(232, 121, 249, 0.1) 0%, transparent 68%);
+  opacity: 0.2;
+}
+
+.qwa-nebula--amber {
+  width: min(80vw, 560px);
+  height: min(80vw, 560px);
+  bottom: -12%;
+  left: 18%;
+  background: radial-gradient(circle, rgba(251, 146, 60, 0.09) 0%, rgba(251, 146, 60, 0.02) 40%, transparent 68%);
+  opacity: 0.22;
+}
+
+/* Bloch sphere ambient canvas */
+.qwa-bloch-bg-canvas {
+  @apply pointer-events-none absolute inset-0 h-full w-full;
+  opacity: 0.85;
+}
+
+[data-theme="light"] .qwa-bloch-bg-canvas {
+  opacity: 0.45;
+}
+
+/* NOVA-style orbit rings (left side balance) */
+.qwa-orbit-rings {
+  @apply absolute pointer-events-none;
+  width: min(90vw, 520px);
+  height: min(90vw, 520px);
+  top: 18%;
+  left: -8%;
+  opacity: 0.35;
+}
+
+.qwa-orbit-ring {
+  @apply absolute rounded-full border;
+  animation: qwa-orbit-spin 48s linear infinite;
+}
+
+.qwa-orbit-ring--1 {
+  inset: 0;
+  border-color: rgba(34, 211, 238, 0.25);
+  border-width: 2px;
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.08);
+}
+
+.qwa-orbit-ring--2 {
+  inset: 12%;
+  border-color: rgba(167, 139, 250, 0.2);
+  border-style: dashed;
+  animation-direction: reverse;
+  animation-duration: 64s;
+}
+
+.qwa-orbit-ring--3 {
+  inset: 26%;
+  border-color: rgba(255, 255, 255, 0.08);
+  animation-duration: 36s;
+}
+
+.qwa-orbit-satellite {
+  @apply absolute rounded-full;
+  animation: qwa-orbit-spin 22s linear infinite;
+}
+
+.qwa-orbit-satellite--a {
+  top: 0;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  background: #22d3ee;
+  box-shadow: 0 0 16px #22d3ee, 0 0 32px rgba(34, 211, 238, 0.4);
+  transform-origin: 50% 260px;
+}
+
+.qwa-orbit-satellite--b {
+  bottom: 14%;
+  right: 8%;
+  width: 7px;
+  height: 7px;
+  background: #a78bfa;
+  box-shadow: 0 0 12px #a78bfa;
+  animation-duration: 34s;
+  transform-origin: 50% -180px;
+}
+
+@keyframes qwa-orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* ── Glass & cards ── */
@@ -220,40 +318,21 @@ body {
 }
 
 /* ── Quantum animations ── */
-.qwa-quantum-field-canvas {
-  @apply pointer-events-none absolute inset-0 h-full w-full;
-  opacity: 0.45;
-}
-
-.qwa-cosmos-grid {
-  @apply pointer-events-none absolute inset-0 opacity-[0.04];
-  background-image:
-    linear-gradient(rgba(34, 211, 238, 0.5) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 211, 238, 0.5) 1px, transparent 1px);
-  background-size: 48px 48px;
-  animation: qwa-grid-drift 60s linear infinite;
-}
-
-@keyframes qwa-grid-drift {
-  from { transform: translate(0, 0); }
-  to { transform: translate(48px, 48px); }
-}
-
 .qwa-nebula-drift {
-  animation: qwa-nebula-drift 28s ease-in-out infinite alternate;
+  animation: qwa-nebula-drift 20s ease-in-out infinite alternate;
 }
 
 .qwa-nebula-drift-reverse {
-  animation: qwa-nebula-drift-reverse 34s ease-in-out infinite alternate;
+  animation: qwa-nebula-drift-reverse 26s ease-in-out infinite alternate;
 }
 
 .qwa-nebula-pulse {
-  animation: qwa-nebula-pulse 8s ease-in-out infinite;
+  animation: qwa-nebula-pulse 10s ease-in-out infinite;
 }
 
 @keyframes qwa-nebula-drift {
-  from { transform: translate(0, 0) scale(1); }
-  to { transform: translate(3%, 2%) scale(1.05); }
+  0% { transform: translate(0, 0) scale(1); opacity: 0.85; }
+  100% { transform: translate(18px, -12px) scale(1.05); opacity: 1; }
 }
 
 @keyframes qwa-nebula-drift-reverse {
@@ -380,9 +459,10 @@ body {
   .qwa-hero-orbit--a,
   .qwa-hero-orbit--b,
   .qwa-hero-chip,
-  .qwa-cosmos-grid,
   .qwa-text-gradient,
-  .qwa-progress-shimmer {
+  .qwa-progress-shimmer,
+  .qwa-orbit-ring,
+  .qwa-orbit-satellite {
     animation: none !important;
   }
   .qwa-reveal {

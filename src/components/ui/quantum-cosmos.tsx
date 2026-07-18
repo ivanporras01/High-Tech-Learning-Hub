@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { QuantumFieldCanvas } from "./quantum-field-canvas";
+import { BlochSphereBackground, QwaOrbitRings } from "./bloch-sphere-background";
 
 type StarTint = "white" | "cyan" | "violet";
 
@@ -18,7 +18,7 @@ type Star = {
   prevPy: number;
 };
 
-const STAR_COUNT = 90;
+const STAR_COUNT = 115;
 const TINT_COLORS: Record<StarTint, [number, number, number]> = {
   white: [255, 255, 255],
   cyan: [34, 211, 238],
@@ -200,14 +200,16 @@ export function QuantumCosmosBackground() {
   return (
     <div ref={rootRef} className="qwa-cosmos-root" aria-hidden="true">
       <div className="qwa-cosmos-parallax">
-        <div className="qwa-nebula qwa-nebula--violet qwa-nebula-drift" />
-        <div className="qwa-nebula qwa-nebula--cyan qwa-nebula-drift-reverse" />
+        <div className="qwa-nebula qwa-nebula--cyan qwa-nebula-drift" />
+        <div className="qwa-nebula qwa-nebula--violet qwa-nebula-drift-reverse" />
         <div className="qwa-nebula qwa-nebula--magenta qwa-nebula-pulse" />
+        <div className="qwa-nebula qwa-nebula--amber qwa-nebula-drift" />
       </div>
-      <QuantumFieldCanvas />
+      <QwaOrbitRings />
+      <BlochSphereBackground />
       <canvas ref={canvasRef} className="qwa-cosmos-canvas" />
       <div className="qwa-cosmos-vignette" />
-      <div className="qwa-cosmos-grid" />
+      <div className="qwa-cosmos-aurora" />
     </div>
   );
 }
