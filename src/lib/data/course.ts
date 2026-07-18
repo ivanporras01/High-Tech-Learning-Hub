@@ -4,6 +4,10 @@ import { MODULE2_LESSON_CONTENT } from "./module2-lessons";
 import { MODULE3_LESSON_CONTENT } from "./module3-lessons";
 import { MODULE4_LESSON_CONTENT } from "./module4-lessons";
 import { MODULE5_LESSON_CONTENT } from "./module5-lessons";
+import { MODULE6_LESSON_CONTENT } from "./module6-lessons";
+import { MODULE7_LESSON_CONTENT } from "./module7-lessons";
+import { MODULE8_LESSON_CONTENT } from "./module8-lessons";
+import { MODULE9_LESSON_CONTENT } from "./module9-lessons";
 
 /** Attach rich content to lesson stubs when available */
 function withContent(lessons: Lesson[], map: Record<string, LessonContent>): Lesson[] {
@@ -29,14 +33,14 @@ const module1Lessons: Lesson[] = [
     id: "m1-l1",
     slug: "what-is-quantum-computing",
     title: "What Is Quantum Computing?",
-    description: "Define the qubit, superposition, and how quantum programs differ from classical software.",
+    description: "Define the qubit, superposition, measurement, Born rule, and how quantum programs differ from classical software.",
     objectives: [
       "Define a qubit as |ψ⟩ = α|0⟩ + β|1⟩ and explain amplitudes vs measurement",
-      "Contrast qubit behavior with a classical bit",
-      "Describe superposition, gates, and the Born rule",
+      "Contrast superposition with classical parallelism",
+      "Describe measurement collapse, Born rule, and destructive readout",
       "Identify realistic vs overhyped quantum use cases",
     ],
-    durationMinutes: 35,
+    durationMinutes: 45,
     type: "reading",
     order: 1,
     content: MODULE1_LESSON_CONTENT["what-is-quantum-computing"],
@@ -45,14 +49,15 @@ const module1Lessons: Lesson[] = [
     id: "m1-l2",
     slug: "classical-vs-quantum-information",
     title: "Classical vs Quantum Computing",
-    description: "Detailed comparison: bits vs qubits, advantages, disadvantages, and when to use each.",
+    description: "Detailed comparison: bits vs qubits, no-cloning, decoherence, advantages, disadvantages, and when to use each.",
     objectives: [
       "Compare classical bits and qubits on state, copying, and measurement",
+      "Explain the no-cloning theorem and its security implications",
       "List advantages of quantum computing for specific problem classes",
       "List disadvantages and NISQ limitations honestly",
       "Apply a workforce framework for classical vs quantum tool choice",
     ],
-    durationMinutes: 40,
+    durationMinutes: 45,
     type: "reading",
     order: 2,
     content: MODULE1_LESSON_CONTENT["classical-vs-quantum-information"],
@@ -140,7 +145,7 @@ const modules: Module[] = [
     id: "mod-1",
     slug: "foundations-of-quantum-computing",
     title: "Foundations of Quantum Computing",
-    description: "Core concepts, technology classes, stack literacy, NISQ context, and career orientation.",
+    description: "Core concepts — superposition, measurement, entanglement, gates, NISQ, stack literacy, and career orientation.",
     order: 1,
     lessons: module1Lessons,
   },
@@ -219,13 +224,16 @@ const modules: Module[] = [
     title: "Quantum Algorithms I — Deutsch & Grover",
     description: "Oracle models, Deutsch-Jozsa, and Grover search.",
     order: 6,
-    lessons: [
+    lessons: withContent(
+      [
       lesson("m6-l1", "oracle-model", "The Oracle Model", "Black-box functions in circuits.", ["Encode oracles as unitaries", "Compare query complexity"], 28, 1),
-      lesson("m6-l2", "deutsch-jozsa-algorithm", "Deutsch-Jozsa Algorithm", "Constant vs balanced detection.", ["Implement DJ circuit", "Analyze single-shot advantage context"], 35, 2),
-      lesson("m6-l3", "grover-search-intuition", "Grover Search Intuition", "Amplitude amplification geometry.", ["Explain inversion about average", "Estimate iteration count"], 32, 3),
+      lesson("m6-l2", "deutsch-jozsa-algorithm", "Deutsch-Jozsa Algorithm", "Constant vs balanced detection via interference.", ["Implement DJ circuit", "Analyze single-shot advantage context"], 35, 2),
+      lesson("m6-l3", "grover-search-intuition", "Grover Search Intuition", "Amplitude amplification and interference geometry.", ["Explain inversion about average", "Estimate iteration count"], 40, 3),
       lesson("m6-l4", "grover-implementation", "Grover Implementation", "Build Grover in Qiskit.", ["Code 2-qubit Grover", "Compare to classical search"], 40, 4, "lab-ref"),
-      lesson("m6-l5", "query-complexity-and-limits", "Query Complexity and Limits", "When oracles don't help business.", ["Assess problem fit", "Communicate limits to stakeholders"], 25, 5),
+      lesson("m6-l5", "query-complexity-and-limits", "Query Complexity and Limits", "Honest quantum advantage framing.", ["Assess problem fit", "Communicate limits to stakeholders"], 30, 5),
     ],
+      MODULE6_LESSON_CONTENT
+    ),
   },
   {
     id: "mod-7",
@@ -233,13 +241,16 @@ const modules: Module[] = [
     title: "Quantum Algorithms II — Shor & VQE",
     description: "Factoring overview, phase estimation, and variational methods.",
     order: 7,
-    lessons: [
+    lessons: withContent(
+      [
       lesson("m7-l1", "shors-algorithm-overview", "Shor's Algorithm Overview", "Factoring and cryptography impact.", ["Outline QFT + period finding", "Connect to PQC migration"], 35, 1),
       lesson("m7-l2", "quantum-phase-estimation", "Quantum Phase Estimation", "Eigenphase extraction.", ["Build QPE circuit sketch", "Relate to chemistry applications"], 38, 2),
       lesson("m7-l3", "variational-principle", "The Variational Principle", "Ground-state energy bounds.", ["Explain Rayleigh-Ritz quantum", "Choose ansätze"], 30, 3),
-      lesson("m7-l4", "vqe-workflow", "VQE Workflow", "Hybrid loops in practice.", ["Diagram classical optimizer loop", "Interpret convergence plots"], 35, 4),
-      lesson("m7-l5", "qaoa-introduction", "QAOA Introduction", "Optimization on NISQ hardware.", ["Define cost Hamiltonian", "Compare QAOA vs classical heuristics"], 32, 5),
+      lesson("m7-l4", "vqe-workflow", "VQE Workflow", "Hybrid loops in practice.", ["Diagram classical optimizer loop", "Interpret convergence plots"], 40, 4),
+      lesson("m7-l5", "qaoa-introduction", "QAOA Introduction", "Optimization on NISQ hardware.", ["Define cost Hamiltonian", "Compare QAOA vs classical heuristics"], 35, 5),
     ],
+      MODULE7_LESSON_CONTENT
+    ),
   },
   {
     id: "mod-8",
@@ -247,13 +258,16 @@ const modules: Module[] = [
     title: "Quantum Error Correction",
     description: "Noise models, stabilizers, surface codes, and mitigation.",
     order: 8,
-    lessons: [
-      lesson("m8-l1", "noise-models", "Noise Models", "Depolarizing, amplitude damping.", ["Apply noise channels in simulation", "Read backend calibration data"], 30, 1),
+    lessons: withContent(
+      [
+      lesson("m8-l1", "noise-models", "Noise Models", "Depolarizing, amplitude damping, T1/T2, decoherence.", ["Apply noise channels in simulation", "Read backend calibration data"], 40, 1),
       lesson("m8-l2", "stabilizer-formalism", "Stabilizer Formalism", "Pauli group and syndromes.", ["Identify stabilizer codes", "Connect to surface code intuition"], 35, 2),
       lesson("m8-l3", "surface-code-overview", "Surface Code Overview", "Logical qubits and thresholds.", ["Explain code distance", "Track industry QEC milestones"], 32, 3),
       lesson("m8-l4", "error-mitigation-techniques", "Error Mitigation Techniques", "ZNE, M3, readout correction.", ["Run mitigation in Qiskit", "Report improved expectation values"], 38, 4, "lab-ref"),
       lesson("m8-l5", "reliability-engineering", "Reliability Engineering for Quantum Jobs", "SLAs, shot budgets, and QA.", ["Design validation harness", "Document reproducibility"], 28, 5),
     ],
+      MODULE8_LESSON_CONTENT
+    ),
   },
   {
     id: "mod-9",
@@ -261,13 +275,16 @@ const modules: Module[] = [
     title: "NISQ Hardware, Modalities & Calibration",
     description: "Cross-platform hardware literacy, device topology, calibration, and modality-specific cloud workflows.",
     order: 9,
-    lessons: [
+    lessons: withContent(
+      [
       lesson("m9-l1", "device-topologies", "Device Topologies", "Coupling maps and routing.", ["Read IBM backend properties", "Insert SWAP for connectivity"], 30, 1),
-      lesson("m9-l2", "calibration-data", "Calibration Data", "T1, T2, gate error rates.", ["Interpret backend reports", "Choose optimal qubits"], 32, 2),
+      lesson("m9-l2", "calibration-data", "Calibration Data", "T1, T2, gate error rates.", ["Interpret backend reports", "Choose optimal qubits"], 35, 2),
       lesson("m9-l3", "randomized-benchmarking", "Randomized Benchmarking", "Gate fidelity metrics.", ["Explain RB decay curves", "Compare vendors fairly"], 28, 3),
       lesson("m9-l4", "pulse-level-control", "Pulse-Level Control", "OpenPulse introduction.", ["Identify when pulses matter", "Collaborate with hardware teams"], 35, 4),
       lesson("m9-l5", "hardware-career-paths", "Hardware Career Paths", "Lab roles adjacent to software.", ["Map cryo/FPGA career paths", "Plan cross-training"], 22, 5),
     ],
+      MODULE9_LESSON_CONTENT
+    ),
   },
   {
     id: "mod-10",
@@ -327,7 +344,7 @@ export const QUANTUM_WORKFORCE_COURSE: Course = {
     "Introductory programming (Python recommended)",
     "Basic probability and vectors (linear algebra module included)",
   ],
-  totalHours: 85,
+  totalHours: 95,
   modules,
   tags: ["College & University", "Hardware Modalities", "Qiskit", "Workforce", "NISQ", "Capstone"],
 };

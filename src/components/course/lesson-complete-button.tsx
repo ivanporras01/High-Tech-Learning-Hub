@@ -8,9 +8,9 @@ import { markLessonComplete } from "@/lib/scholar/auth";
 export function LessonCompleteButton({ lessonId, lessonTitle }: { lessonId: string; lessonTitle: string }) {
   const { scholar, progress, refresh } = useScholar();
   const router = useRouter();
-  const [done, setDone] = useState(progress.completedLessonIds.includes(lessonId));
+  const [done, setDone] = useState(progress?.completedLessonIds.includes(lessonId) ?? false);
 
-  if (!scholar) {
+  if (!scholar || !progress) {
     return (
       <p className="mt-10 text-sm text-[var(--qwa-fg-muted)]">
         <a href="/login" className="text-[var(--qwa-cyan)] hover:underline">Sign in</a> to track progress and earn your certificate.

@@ -12,7 +12,7 @@ export function DashboardClient() {
   const router = useRouter();
   const course = getCourse();
   const totalLessons = getTotalLessonCount();
-  const completedCount = progress.completedLessonIds.length;
+  const completedCount = progress?.completedLessonIds.length ?? 0;
   const percentComplete = Math.round((completedCount / totalLessons) * 100);
   const m1Pct = module1ProgressPercent(progress);
   const certReady = isModule1Complete(progress);

@@ -1,72 +1,164 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import {
-  getSessionScholar,
-  getScholarProgress,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import {
+  getStoredSession,
+  getScholarAccount,
   loginScholar,
   logoutScholar,
   registerScholar,
-  type Scholar,
-  type ScholarProgress,
 } from "@/lib/scholar/auth";
+import {
+  getCertificateProgress,
+  getScholarProgress,
+  markLessonComplete,
+} from "@/lib/scholar/progress";
+import type { ScholarProgress, ScholarSession } from "@/lib/scholar/types";
 
-type ScholarContextValue = {
-  scholar: Scholar | null;
-  progress: ScholarProgress;
+interface ScholarView {
+  id: string;
+  fullName: string;
+  email: string;
+  institution?: string;
+}
+
+interface ScholarContextValue {
+  session: ScholarSession | null;
+  /** Convenience view for UI — maps session + account fields */
+  scholar: ScholarView | null;
+  progress: ScholarProgress | null;
+  certificateProgress: ReturnType<typeof getCertificateProgress> | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<Awaited<ReturnType<typeof loginScholar>>>;
-  register: (data: Parameters<typeof registerScholar>[0]) => Promise<Awaited<ReturnType<typeof registerScholar>>>;
+  register: (input: {
+    fullName: string;
+    email: string;
+    password: string;
+    institution?: string;
+  }) => Promise<{ ok: true } | { ok: false; error: string }>;
+  login: (email: string, password: string) => Promise<{ ok: true } | { ok: false; error: string }>;
   logout: () => void;
+  completeLesson: (lessonId: string) => void;
+  refreshProgress: () => void;
+  /** @deprecated use refreshProgress */
   refresh: () => void;
-};
+}
 
-const ScholarContext = createContext<ScholarContextValue | null>(null);
+const ScholarContext = createContext<ScholarContextValue | undefined>(undefined);
 
-export function ScholarProvider({ children }: { children: ReactNode }) {
-  const [scholar, setScholar] = useState<Scholar | null>(null);
-  const [progress, setProgress] = useState<ScholarProgress>({ completedLessonIds: [] });
+export function ScholarProvider({ children }: { children: React.ReactNode }) {
+  const [session, setSession] = useState<ScholarSession | null>(null);
+  const [progress, setProgress] = useState<ScholarProgress | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const refresh = useCallback(() => {
-    const s = getSessionScholar();
-    setScholar(s);
-    setProgress(s ? getScholarProgress(s.id) : { completedLessonIds: [] });
-  }, []);
+  const refreshProgress = useCallback(() => {
+    if (!session) {
+      setProgress(null);
+      return;
+    }
+    setProgress(getScholarProgress(session.scholarId));
+  }, [session]);
 
   useEffect(() => {
-    refresh();
+    const stored = getStoredSession();
+    setSession(stored);
+    if (stored) {
+      setProgress(getScholarProgress(stored.scholarId));
+    }
     setLoading(false);
-  }, [refresh]);
+  }, []);
 
-  const login = async (email: string, password: string) => {
+  const register = useCallback(
+    async (input: {
+      fullName: string;
+      email: string;
+      password: string;
+      institution?: string;
+    }) => {
+      const result = await registerScholar(input);
+      if (!result.ok) return result;
+      setSession(result.session);
+      setProgress(getScholarProgress(result.session.scholarId));
+      return { ok: true as const };
+    },
+    []
+  );
+
+  const login = useCallback(async (email: string, password: string) => {
     const result = await loginScholar(email, password);
-    if (result.ok) {
-      setScholar(result.scholar);
-      setProgress(getScholarProgress(result.scholar.id));
-    }
-    return result;
-  };
+    if (!result.ok) return result;
+    setSession(result.session);
+    setProgress(getScholarProgress(result.session.scholarId));
+    return { ok: true as const };
+  }, []);
 
-  const register = async (data: Parameters<typeof registerScholar>[0]) => {
-    const result = await registerScholar(data);
-    if (result.ok) {
-      setScholar(result.scholar);
-      setProgress({ completedLessonIds: [] });
-    }
-    return result;
-  };
-
-  const logout = () => {
+  const logout = useCallback(() => {
     logoutScholar();
-    setScholar(null);
-    setProgress({ completedLessonIds: [] });
-  };
+    setSession(null);
+    setProgress(null);
+  }, []);
+
+  const completeLesson = useCallback(
+    (lessonId: string) => {
+      if (!session) return;
+      const updated = markLessonComplete(session.scholarId, lessonId);
+      setProgress(updated);
+    },
+    [session]
+  );
+
+  const scholar = useMemo((): ScholarView | null => {
+    if (!session) return null;
+    const account = getScholarAccount(session.scholarId);
+    return {
+      id: session.scholarId,
+      fullName: session.fullName,
+      email: session.email,
+      institution: account?.institution,
+    };
+  }, [session]);
+
+  const certificateProgress = useMemo(() => {
+    if (!session) return null;
+    return getCertificateProgress(session.scholarId);
+  }, [session, progress]);
+
+  const value = useMemo(
+    () => ({
+      session,
+      scholar,
+      progress,
+      certificateProgress,
+      loading,
+      register,
+      login,
+      logout,
+      completeLesson,
+      refreshProgress,
+      refresh: refreshProgress,
+    }),
+    [
+      session,
+      scholar,
+      progress,
+      certificateProgress,
+      loading,
+      register,
+      login,
+      logout,
+      completeLesson,
+      refreshProgress,
+    ]
+  );
 
   return (
-    <ScholarContext.Provider value={{ scholar, progress, loading, login, register, logout, refresh }}>
-      {children}
-    </ScholarContext.Provider>
+    <ScholarContext.Provider value={value}>{children}</ScholarContext.Provider>
   );
 }
 

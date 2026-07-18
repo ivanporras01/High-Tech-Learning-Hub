@@ -30,9 +30,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-    const preferred =
-      stored ??
-      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    // QWA is designed for dark cosmos — only honor an explicit user choice.
+    const preferred: Theme = stored === "light" ? "light" : "dark";
     setThemeState(preferred);
     applyTheme(preferred);
     setMounted(true);

@@ -1,28 +1,32 @@
-export type ScholarAccount = {
+/** Scholar account & session — client-side MVP; migrate to Firebase/Supabase later */
+
+export interface ScholarAccount {
   id: string;
   fullName: string;
   email: string;
   passwordHash: string;
   institution?: string;
   createdAt: string;
-};
+}
 
-export type ScholarSession = {
+export interface ScholarSession {
   scholarId: string;
   email: string;
   fullName: string;
-};
+}
 
-export type Scholar = {
-  id: string;
-  fullName: string;
-  email: string;
-  institution?: string;
-  registeredAt: string;
-};
-
-export type ScholarProgress = {
+export interface ScholarProgress {
+  courseId: string;
   completedLessonIds: string[];
-  certificateIssuedAt?: string;
+  completedLabIds: string[];
   certificateId?: string;
-};
+  certificateIssuedAt?: string;
+}
+
+export interface CertificateRecord {
+  id: string;
+  scholarId: string;
+  scholarName: string;
+  courseTitle: string;
+  issuedAt: string;
+}

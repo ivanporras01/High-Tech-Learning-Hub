@@ -23,13 +23,14 @@ export function Navbar() {
 
   return (
     <header className="qwa-glass-nav sticky top-0 z-50">
-      <nav className="qwa-container flex h-[3.75rem] items-center justify-between gap-3" aria-label="Main navigation">
+      <nav className="qwa-container flex h-16 items-center justify-between gap-3" aria-label="Main navigation">
         <Link href="/" className="qwa-brand shrink-0" aria-label="Quantum Workforce Academy home">
-          <QwaLogo size={42} variant="icon" className="qwa-logo-pulse" />
+          <QwaLogo size={52} variant="icon" className="qwa-brand-logo qwa-logo-pulse shrink-0" />
           <span className="qwa-brand-short sm:hidden">QWA</span>
           <span className="qwa-brand-stack hidden sm:flex">
-            <span className="qwa-brand-title">Quantum Workforce</span>
-            <span className="qwa-brand-sub">Academy</span>
+            <span className="qwa-brand-line">Quantum</span>
+            <span className="qwa-brand-line">Workforce</span>
+            <span className="qwa-brand-line qwa-brand-line--accent">Academy</span>
           </span>
         </Link>
 

@@ -16,7 +16,7 @@ export default function CertificatePage() {
     if (!loading && !scholar) router.replace("/login?next=/certificate");
   }, [loading, scholar, router]);
 
-  if (loading || !scholar) return null;
+  if (loading || !scholar || !progress) return null;
 
   if (!eligible) {
     return (
@@ -57,7 +57,7 @@ export default function CertificatePage() {
           </div>
           <div>
             <p className="text-[var(--qwa-fg-muted)]">Certificate ID</p>
-            <p className="font-mono font-semibold text-[var(--qwa-cyan)]">{progress.certificateId}</p>
+            <p className="font-mono font-semibold text-[var(--qwa-cyan)]">{progress.certificateId ?? scholar.id.slice(0, 8).toUpperCase()}</p>
           </div>
         </div>
         <div className="mt-10 border-t border-[var(--qwa-border)] pt-6 text-xs text-[var(--qwa-fg-muted)]">

@@ -1,11 +1,22 @@
-import type { Scholar, ScholarAccount, ScholarProgress, ScholarSession } from "./types";
+import type { ScholarAccount, ScholarProgress, ScholarSession } from "./types";
 import { SCHOLARS_STORAGE_KEY, SESSION_STORAGE_KEY } from "./storage-keys";
+import { getModule1LessonIds, markLessonComplete as markLessonCompleteProgress } from "./progress";
 
-export type { Scholar, ScholarProgress, ScholarAccount, ScholarSession };
+export { markLessonCompleteProgress as markLessonComplete };
 
-export const MODULE1_LESSON_IDS = ["m1-l1", "m1-l2", "m1-l3", "m1-l3b", "m1-l4", "m1-l5", "m1-l6"];
+export function isModule1Complete(progress: ScholarProgress | null): boolean {
+  if (!progress) return false;
+  const requiredIds = getModule1LessonIds();
+  return requiredIds.length > 0 && requiredIds.every((id) => progress.completedLessonIds.includes(id));
+}
 
-const PROGRESS_PREFIX = "qwa-progress-";
+export function module1ProgressPercent(progress: ScholarProgress | null): number {
+  if (!progress) return 0;
+  const requiredIds = getModule1LessonIds();
+  if (requiredIds.length === 0) return 0;
+  const completed = requiredIds.filter((id) => progress.completedLessonIds.includes(id)).length;
+  return Math.round((completed / requiredIds.length) * 100);
+}
 
 function isBrowser(): boolean {
   return typeof window !== "undefined";
@@ -34,14 +45,8 @@ function writeScholars(scholars: ScholarAccount[]): void {
   localStorage.setItem(SCHOLARS_STORAGE_KEY, JSON.stringify(scholars));
 }
 
-function accountToScholar(account: ScholarAccount): Scholar {
-  return {
-    id: account.id,
-    fullName: account.fullName,
-    email: account.email,
-    institution: account.institution,
-    registeredAt: account.createdAt,
-  };
+function generateId(): string {
+  return crypto.randomUUID();
 }
 
 export async function registerScholar(input: {
@@ -49,7 +54,7 @@ export async function registerScholar(input: {
   email: string;
   password: string;
   institution?: string;
-}): Promise<{ ok: true; scholar: Scholar } | { ok: false; error: string }> {
+}): Promise<{ ok: true; session: ScholarSession } | { ok: false; error: string }> {
   const fullName = input.fullName.trim();
   const email = input.email.trim().toLowerCase();
   const password = input.password;
@@ -60,14 +65,17 @@ export async function registerScholar(input: {
   if (password.length < 6) {
     return { ok: false, error: "Password must be at least 6 characters." };
   }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { ok: false, error: "Enter a valid email address." };
+  }
 
   const scholars = readScholars();
   if (scholars.some((s) => s.email === email)) {
-    return { ok: false, error: "An account with this email already exists." };
+    return { ok: false, error: "An account with this email already exists. Sign in instead." };
   }
 
   const account: ScholarAccount = {
-    id: crypto.randomUUID(),
+    id: generateId(),
     fullName,
     email,
     passwordHash: await hashPassword(password),
@@ -84,22 +92,24 @@ export async function registerScholar(input: {
     fullName: account.fullName,
   };
   localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
-  return { ok: true, scholar: accountToScholar(account) };
+  return { ok: true, session };
 }
 
 export async function loginScholar(
   email: string,
   password: string
-): Promise<{ ok: true; scholar: Scholar } | { ok: false; error: string }> {
+): Promise<{ ok: true; session: ScholarSession } | { ok: false; error: string }> {
   const normalizedEmail = email.trim().toLowerCase();
-  const account = readScholars().find((s) => s.email === normalizedEmail);
+  const scholars = readScholars();
+  const account = scholars.find((s) => s.email === normalizedEmail);
 
   if (!account) {
-    return { ok: false, error: "Invalid email or password." };
+    return { ok: false, error: "No account found for this email. Register first." };
   }
 
-  if (account.passwordHash !== (await hashPassword(password))) {
-    return { ok: false, error: "Invalid email or password." };
+  const passwordHash = await hashPassword(password);
+  if (account.passwordHash !== passwordHash) {
+    return { ok: false, error: "Incorrect password." };
   }
 
   const session: ScholarSession = {
@@ -108,7 +118,7 @@ export async function loginScholar(
     fullName: account.fullName,
   };
   localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
-  return { ok: true, scholar: accountToScholar(account) };
+  return { ok: true, session };
 }
 
 export function logoutScholar(): void {
@@ -116,50 +126,16 @@ export function logoutScholar(): void {
   localStorage.removeItem(SESSION_STORAGE_KEY);
 }
 
-export function getSessionScholar(): Scholar | null {
+export function getStoredSession(): ScholarSession | null {
   if (!isBrowser()) return null;
   try {
     const raw = localStorage.getItem(SESSION_STORAGE_KEY);
-    if (!raw) return null;
-    const session = JSON.parse(raw) as ScholarSession;
-    const account = readScholars().find((s) => s.id === session.scholarId);
-    return account ? accountToScholar(account) : null;
+    return raw ? (JSON.parse(raw) as ScholarSession) : null;
   } catch {
     return null;
   }
 }
 
-export function getScholarProgress(scholarId: string): ScholarProgress {
-  if (!isBrowser()) return { completedLessonIds: [] };
-  try {
-    return JSON.parse(localStorage.getItem(`${PROGRESS_PREFIX}${scholarId}`) ?? '{"completedLessonIds":[]}');
-  } catch {
-    return { completedLessonIds: [] };
-  }
-}
-
-function saveScholarProgress(scholarId: string, progress: ScholarProgress): void {
-  localStorage.setItem(`${PROGRESS_PREFIX}${scholarId}`, JSON.stringify(progress));
-}
-
-export function markLessonComplete(scholarId: string, lessonId: string): ScholarProgress {
-  const progress = getScholarProgress(scholarId);
-  if (!progress.completedLessonIds.includes(lessonId)) {
-    progress.completedLessonIds.push(lessonId);
-  }
-  if (isModule1Complete(progress) && !progress.certificateIssuedAt) {
-    progress.certificateIssuedAt = new Date().toISOString();
-    progress.certificateId = `QWA-${Date.now().toString(36).toUpperCase()}`;
-  }
-  saveScholarProgress(scholarId, progress);
-  return progress;
-}
-
-export function isModule1Complete(progress: ScholarProgress): boolean {
-  return MODULE1_LESSON_IDS.every((id) => progress.completedLessonIds.includes(id));
-}
-
-export function module1ProgressPercent(progress: ScholarProgress): number {
-  const done = MODULE1_LESSON_IDS.filter((id) => progress.completedLessonIds.includes(id)).length;
-  return Math.round((done / MODULE1_LESSON_IDS.length) * 100);
+export function getScholarAccount(scholarId: string): ScholarAccount | undefined {
+  return readScholars().find((s) => s.id === scholarId);
 }

@@ -9,8 +9,8 @@ const SIMULATIONS = [
   },
   {
     href: "/simulations/optical-circuits",
-    title: "Optical Circuit Simulator",
-    description: "Mach–Zehnder interferometer, dual-rail qubits, beam splitters — photonic quantum computing.",
+    title: "Optical Bench Simulator",
+    description: "Thorlabs-style catalog — drag components, wire ports, Jones optics, power meters, LOQC view.",
     status: "Live",
   },
   {

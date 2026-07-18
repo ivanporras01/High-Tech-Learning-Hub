@@ -14,7 +14,15 @@ export const MODULE1_LESSON_CONTENT: Record<string, LessonContent> = {
       },
       {
         heading: "The Core Idea: Superposition and Measurement",
-        body: "Superposition is not parallel trial of both values at once. It is a single state vector in a Hilbert space whose measurement statistics can differ from any classical mixture. Two qubits can be entangled — their joint state cannot be written as separate states for each qubit. Entanglement plus interference is what powers algorithms like Shor and Grover, not 'trying all answers simultaneously.' As a scholar, you must explain superposition correctly to managers and interviewers: quantum computers manipulate amplitudes with reversible gates; measurement is probabilistic and destructive (collapses the state).",
+        body: "Superposition is not parallel trial of both values at once. It is a single state vector in a Hilbert space whose measurement statistics can differ from any classical mixture. Mathematically, |ψ⟩ = α|0⟩ + β|1⟩ with α, β ∈ ℂ and |α|² + |β|² = 1. The amplitudes α and β encode both magnitude (via Born rule probabilities) and relative phase (via interference). Two qubits can be entangled — their joint state cannot be written as separate states for each qubit. Entanglement plus interference is what powers algorithms like Shor and Grover, not 'trying all answers simultaneously.' As a scholar, you must explain superposition correctly to managers and interviewers: quantum computers manipulate amplitudes with reversible gates; measurement is probabilistic and destructive (collapses the state).",
+      },
+      {
+        heading: "Superposition vs Classical Parallelism",
+        body: "A common misconception: n qubits in superposition equals 2ⁿ classical computers running at once. This is false. The 2ⁿ amplitudes describe one quantum state; measurement returns one n-bit outcome per shot. Quantum speedup comes from interference — amplitudes for wrong answers cancel and correct answers reinforce — not from reading all branches simultaneously. Grover search uses O(√N) queries, not O(1). Explain superposition as 'one vector with complex coefficients' not 'many classical threads.'",
+      },
+      {
+        heading: "Measurement, Collapse, and the Born Rule",
+        body: "Projective measurement in the Z basis collapses |ψ⟩ = α|0⟩ + β|1⟩ to |0⟩ with probability |α|² or |1⟩ with probability |β|² (Born rule). After measurement, the qubit is in that basis state — the original superposition is destroyed (destructive readout). To estimate probabilities, repeat identical circuit preparations (shots) and histogram outcomes. One measurement gives one classical bit of information about the pre-measurement state.",
       },
       {
         heading: "From Physics to Programs",
@@ -41,14 +49,21 @@ export const MODULE1_LESSON_CONTENT: Record<string, LessonContent> = {
       {
         type: "circuit-diagram",
         title: "Your first superposition circuit",
-        afterSection: 3,
+        afterSection: 4,
         props: { gates: [{ id: "H" }, { id: "M" }] },
+      },
+      {
+        type: "probability-chart",
+        title: "Born rule after H|0⟩",
+        caption: "P(0) = P(1) = 0.5 — one shot yields one outcome; many shots approximate these probabilities.",
+        afterSection: 4,
+        props: { prob0: 0.5, prob1: 0.5 },
       },
       {
         type: "gate-playground",
         title: "Build your own single-qubit circuit",
         caption: "Experiment with Pauli and rotation gates — every gate is a rotation on the Bloch sphere.",
-        afterSection: 3,
+        afterSection: 5,
       },
     ],
     summary:
@@ -61,6 +76,9 @@ export const MODULE1_LESSON_CONTENT: Record<string, LessonContent> = {
       { term: "Amplitude", definition: "Complex number α or β weighting each basis state before measurement." },
       { term: "Superposition", definition: "A qubit state that is a weighted combination of |0⟩ and |1⟩ before measurement." },
       { term: "Born rule", definition: "Measurement probability for outcome k equals the squared magnitude of its amplitude." },
+      { term: "Destructive readout", definition: "Measurement collapses superposition; the pre-measurement state cannot be recovered." },
+      { term: "Interference", definition: "Amplitudes add before squaring; relative phase controls enhancement or cancellation." },
+      { term: "Entanglement", definition: "Non-separable correlation between qubits — joint state cannot be factored per qubit." },
       { term: "Unitary gate", definition: "A reversible quantum operation U with U†U = I that rotates the state vector." },
     ],
     references: [
@@ -239,7 +257,7 @@ export const MODULE1_LESSON_CONTENT: Record<string, LessonContent> = {
     sections: [
       {
         heading: "Where We Are: NISQ Devices",
-        body: "Current processors offer tens to thousands of physical qubits with error rates far above fault-tolerance thresholds. Algorithms must be shallow (few gate layers), use error mitigation, and repeat experiments for statistics. Google's 2019 quantum supremacy experiment and IBM's Condor (1,121 superconducting qubits) illustrate progress — but logical qubits protected by error correction remain an active research frontier.",
+        body: "Current processors offer tens to thousands of physical qubits with error rates far above fault-tolerance thresholds. Algorithms must be shallow (few gate layers), use error mitigation, and repeat experiments for statistics. Google's 2019 quantum supremacy experiment and IBM's Condor (1,121 superconducting qubits) illustrate progress — but logical qubits protected by error correction remain an active research frontier. Typical superconducting T1/T2 times are 50–300 microseconds; circuits must complete within coherence budgets.",
       },
       {
         heading: "Error Mitigation vs Error Correction",
